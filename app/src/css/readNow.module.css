@@ -1,0 +1,65 @@
+.answerListContainr {
+  display: flex;
+  padding: 12px 0px;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #000;
+  background: #fafafa;
+}
+
+.answerListQuestion {
+  font-size: 24px;
+  line-height: 30px;
+  letter-spacing: -0.72px;
+}
+
+.answerListReqDate {
+  color: #b0b0b0;
+  font-size: 18px;
+  line-height: 30px;
+  letter-spacing: -0.54px;
+}
+
+.answerCardContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+  border-bottom: 1px solid #000;
+}
+
+.answerCardQuestionBox {
+  display: flex;
+  padding-bottom: 20px;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-self: stretch;
+  border-bottom: 1px solid #bcbcbc;
+  margin-top: 20px;
+}
+
+.answerCardQuestionBoxInner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.answerCardQuestion {
+  font-size: 24px;
+  line-height: 30px; /* 125% */
+  letter-spacing: -0.72px;
+}
+.answerCardRegDate {
+  color: #b0b0b0;
+  font-size: 18px;
+  line-height: 30px;
+  letter-spacing: -0.54px;
+}
+.answerCardMessageBox {
+  font-size: 60px;
+  line-height: 80px; /* 133.333% */
+  letter-spacing: -1.8px;
+  width: 100%;
+}

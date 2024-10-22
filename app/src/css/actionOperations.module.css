@@ -1,0 +1,13 @@
+.actions-operations {
+    height: 16px;
+    position: relative;
+    width: 16px;
+  }
+  
+  .actions-operations .fill {
+    height: 13px;
+    left: 1px;
+    position: absolute;
+    top: 1px;
+    width: 13px;
+  }
