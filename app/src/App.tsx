@@ -11,7 +11,7 @@ import Intro from "./pages/intro";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { answersAtom, progressBarVisibleAtom, wordsAtom } from "./atoms";
 import FullScreenProgressBar from "./components/FullScreenProgressBar";
-import { fetchAnswers } from "./api/readNowAPI";
+import { fetchAnswers } from "./api/answerAPI";
 import { fetchWords } from "./api/libraryAPI";
 
 function App() {

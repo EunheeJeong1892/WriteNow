@@ -7,6 +7,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { progressBarVisibleAtom, wordsAtom } from "../atoms";
 import { UnderlinedWord, WordProps } from "../types/types";
 import { useNavigate } from "react-router-dom";
+import { postAnswer } from "../api/answerAPI";
 
 interface PopupImage {
   src: string;
@@ -27,42 +28,30 @@ function WriteNow() {
   >([]); // 단어와 이미지 정보 저장
 
   const uniqueWords = (array: UnderlinedWord[]) => {
-    const seen = new Set<string>(); // Set to track seen words
+    const seen = new Set<string>();
     return array.filter((item) => {
       const word = item.word;
       if (seen.has(word)) {
-        return false; // If word is already seen, exclude it
+        return false;
       }
-      seen.add(word); // Mark word as seen
-      return true; // Keep the first occurrence
+      seen.add(word);
+      return true;
     });
   };
 
-  const postAnswer = async (questionID: number) => {
+  const submitAnswer = async (questionID: number) => {
     try {
       if (hasSubmitted) return;
       setProgressBarVisible(true);
 
-      const message = inputRef.current?.innerText.trim();
-
-      const response = await fetch(
-        "https://tqx65zlmb5.execute-api.ap-northeast-2.amazonaws.com/Answers",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            questionID,
-            message,
-            wordsWithImages: uniqueWords(
-              underlinedWordsData.sort((a, b) => a.position - b.position)
-            ),
-          }),
-        }
+      const message = inputRef.current?.innerText.trim() || "";
+      const wordsWithImages = uniqueWords(
+        underlinedWordsData.sort((a, b) => a.position - b.position)
       );
 
-      if (response.ok) {
+      const result = await postAnswer(questionID, message, wordsWithImages);
+
+      if (result) {
         setHasSubmitted(true);
         setShowOutcome(true);
       }
@@ -205,7 +194,7 @@ function WriteNow() {
       <Header
         showInput={true}
         onInputAction={handleInput}
-        onSubmitAction={postAnswer}
+        onSubmitAction={submitAnswer}
         inputRef={inputRef}
         displayMenuRef={displayMenuRef}
       ></Header>

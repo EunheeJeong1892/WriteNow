@@ -7,7 +7,7 @@ import { answersAtom } from "../atoms";
 import Outcome from "../components/outcome";
 import AnswerList from "../components/readNow/answerList";
 import AnswerCard from "../components/readNow/answerCard";
-import { fetchAnswers } from "../api/readNowAPI";
+import { fetchAnswers } from "../api/answerAPI";
 import { QUESTIONS } from "../constants/constants";
 import readNowStyles from "../css/readNow.module.css";
 
