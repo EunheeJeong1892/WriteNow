@@ -66,7 +66,7 @@ function ReadNow() {
           endCallback={handleOutcomeEnd}
         />
       )}{" "}
-      <Header />
+      <Header showInput={false} />
       <Helmet>
         <title>Read Now</title>
       </Helmet>

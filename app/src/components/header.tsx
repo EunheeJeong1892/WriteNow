@@ -4,12 +4,21 @@ import headerStyle from "../css/header.module.css";
 import { useNavigate } from "react-router-dom";
 import { QUESTIONS } from "../constants/constants";
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  showInput: boolean;
+  onInputAction?: (input: string) => void;
+  inputRef?: React.RefObject<HTMLDivElement>;
+}
+
+const Header: React.FC<HeaderProps> = ({
+  showInput,
+  onInputAction,
+  inputRef,
+}) => {
   const navigate = useNavigate();
   const [currentMenu, setCurrentMenu] = useState<string>("");
   const [displayedMenu, setDisplayedMenu] = useState<string>("");
   const placeholders = QUESTIONS.map((o) => o.message);
-  const editableDiv = useRef<HTMLDivElement>(null);
   const [placeholder, setPlaceholder] = useState("");
   const [placeholderNum, setPlaceholderNum] = useState<number>(0);
   const [inputText, setInputText] = useState<string>(""); // 상태로 텍스트 관리
@@ -18,18 +27,21 @@ const Header: React.FC = () => {
   const menus = ["writeNow", "readNow", "library"];
 
   useEffect(() => {
-    setPlaceholder(placeholders[placeholderNum]);
+    if (currentMenu === "writeNow") {
+      setPlaceholder(placeholders[placeholderNum]);
+    } else if (currentMenu === "library") {
+      setPlaceholder("검색어를 입력하세요.");
+    }
   }, [placeholderNum]);
 
   useEffect(() => {
     setPlaceholderNum(Math.floor(Math.random() * placeholders.length));
-
-    if (editableDiv.current) {
-      editableDiv.current.focus();
+    if (inputRef) {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
     }
-  }, []);
 
-  useEffect(() => {
     const path = window.location.pathname.replace("/", "");
     setCurrentMenu(path || "writeNow");
     setDisplayedMenu(path || "writeNow");
@@ -40,6 +52,14 @@ const Header: React.FC = () => {
   };
 
   const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
+    const newText = e.currentTarget.innerText;
+    setInputText(newText);
+    if (onInputAction) {
+      onInputAction(newText); // 페이지별 로직 호출
+    }
+  };
+
+  const handleInput2 = (e: React.FormEvent<HTMLDivElement>) => {
     const newText = e.currentTarget.innerText;
     if (newText) {
       setDisplayedMenu(placeholder);
@@ -57,8 +77,10 @@ const Header: React.FC = () => {
     setPlaceholderNum(randomIndex);
     setInputText("");
     setDisplayedMenu(currentMenu);
-    if (editableDiv.current) {
-      editableDiv.current.innerText = "";
+    if (inputRef) {
+      if (inputRef.current) {
+        inputRef.current.innerText = "";
+      }
     }
   };
 
@@ -94,10 +116,11 @@ const Header: React.FC = () => {
           </div>
         </div>
       </header>
-      {currentMenu != "readNow" && (
+      {showInput && (
         <div
           id="editable"
           className={headerStyle.editable}
+          ref={inputRef}
           contentEditable="true"
           onInput={handleInput}
           onCompositionStart={() => setIsComposing(true)}
@@ -106,7 +129,6 @@ const Header: React.FC = () => {
             setInputText(e.currentTarget.innerText);
             //checkText();
           }}
-          ref={editableDiv}
           data-placeholder={`${placeholder}`}
         ></div>
       )}

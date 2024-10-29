@@ -14,7 +14,7 @@ interface PopupImage {
 }
 
 function WriteNow() {
-  const editableDiv = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLDivElement>(null);
   const [popupImages, setPopupImages] = useState<PopupImage[]>([]);
   const [displayedWords, setDisplayedWords] = useState<Set<string>>(new Set());
   const [inputText, setInputText] = useState<string>(""); // 상태로 텍스트 관리
@@ -72,10 +72,10 @@ function WriteNow() {
   };
 
   const checkText = () => {
-    if (!editableDiv.current) return;
+    if (!inputRef.current) return;
 
-    let formattedText = editableDiv.current.innerText;
-    const plainText = editableDiv.current?.innerText || "";
+    let formattedText = inputRef.current.innerText;
+    const plainText = inputRef.current?.innerText || "";
     let newUnderlinedWordsData: UnderlinedWord[] = []; // 새로운 데이터를 담을 배열
 
     for (const item of wordList) {
@@ -104,7 +104,7 @@ function WriteNow() {
 
     setUnderlinedWordsData(newUnderlinedWordsData); // 새로운 데이터를 상태로 설정
 
-    let originText = editableDiv.current.innerText;
+    let originText = inputRef.current.innerText;
     const words = originText.split(/\s+/);
     words.forEach((word) => {
       const finded: WordProps[] | [] =
@@ -115,8 +115,8 @@ function WriteNow() {
       }
     });
 
-    editableDiv.current.innerHTML = formattedText;
-    setCaretToEnd(editableDiv.current);
+    inputRef.current.innerHTML = formattedText;
+    setCaretToEnd(inputRef.current);
   };
 
   const showPopupImage = (word: string, finded: WordProps[]) => {
@@ -177,6 +177,8 @@ function WriteNow() {
     navigate(0);
   };
 
+  const handleInput = () => {};
+
   return (
     <>
       {showOutcome && (
@@ -190,7 +192,11 @@ function WriteNow() {
       <Helmet>
         <title>Write Now</title>
       </Helmet>
-      <Header></Header>
+      <Header
+        showInput={true}
+        onInputAction={handleInput}
+        inputRef={inputRef}
+      ></Header>
       <div className={styles.typeNowContainer}>
         <div className="popup" id="popup">
           {popupImages.map((image, index) => (

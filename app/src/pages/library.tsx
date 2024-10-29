@@ -59,7 +59,7 @@ function Library() {
 
   return (
     <>
-      <Header />
+      <Header showInput={true} />
       <Helmet>
         <title>Library</title>
       </Helmet>
