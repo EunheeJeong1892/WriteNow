@@ -18,7 +18,6 @@ function WriteNow() {
   const displayMenuRef = useRef<HTMLDivElement>(null);
   const [popupImages, setPopupImages] = useState<PopupImage[]>([]);
   const [displayedWords, setDisplayedWords] = useState<Set<string>>(new Set());
-  const [inputText, setInputText] = useState<string>(""); // 상태로 텍스트 관리
   const [showOutcome, setShowOutcome] = useState<boolean>(false); // Outcome 표시 상태
   const wordList = useRecoilValue(wordsAtom);
   const [hasSubmitted, setHasSubmitted] = useState(false); // 방어 코드 추가
@@ -39,10 +38,12 @@ function WriteNow() {
     });
   };
 
-  const postAnswer = async (questionID: number, message: string) => {
+  const postAnswer = async (questionID: number) => {
     try {
       if (hasSubmitted) return;
       setProgressBarVisible(true);
+
+      const message = inputRef.current?.innerText.trim();
 
       const response = await fetch(
         "https://tqx65zlmb5.execute-api.ap-northeast-2.amazonaws.com/Answers",
@@ -192,7 +193,7 @@ function WriteNow() {
       {showOutcome && (
         <Outcome
           images={underlinedWordsData}
-          message={inputText}
+          message={inputRef?.current?.innerText.trim() || ""}
           endCallback={handleOutcomeEnd}
           question={displayMenuRef.current?.innerText}
         />
@@ -204,6 +205,7 @@ function WriteNow() {
       <Header
         showInput={true}
         onInputAction={handleInput}
+        onSubmitAction={postAnswer}
         inputRef={inputRef}
         displayMenuRef={displayMenuRef}
       ></Header>

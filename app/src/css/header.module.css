@@ -160,3 +160,17 @@
   left: 0;
   width: 100%;
 }
+
+.send {
+  position: absolute;
+  right: 0;
+  bottom: 27px;
+  cursor: pointer;
+  z-index: 100;
+}
+.send-circle {
+  fill: #959595;
+}
+.send:hover .send-circle {
+  fill: #007aff;
+}
