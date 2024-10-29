@@ -47,6 +47,13 @@
   font-size: 16px;
   line-height: 26px;
   letter-spacing: -0.48px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.description-expanded {
+  max-height: 500px;
 }
 
 .arrow-down {

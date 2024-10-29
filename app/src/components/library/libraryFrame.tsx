@@ -44,7 +44,13 @@ const LibraryFrame: React.FC<WordProps> = ({
         </div>
       </div>
       {showDescription && (
-        <div className={libraryStyles.description}>{description}</div>
+        <div
+          className={`${libraryStyles.description} ${
+            showDescription ? libraryStyles["description-expanded"] : ""
+          }`}
+        >
+          {description}
+        </div>
       )}
     </div>
   );

@@ -8,6 +8,7 @@ import { wordsAtom } from "../atoms";
 import AddWordModal from "../components/library/addWordModal";
 import { default as Frame } from "../components/library/libraryFrame";
 import libraryStyles from "../css/library.module.css";
+import { fetchWords } from "../api/libraryAPI";
 
 function Library() {
   const [inputText, setInputText] = useState<string>(""); // 상태로 텍스트 관리
@@ -32,24 +33,14 @@ function Library() {
 
   // 처음 페이지가 로드될 때 words 데이터를 가져와서 Recoil 상태에 저장
   useEffect(() => {
-    const fetchWords = async () => {
-      try {
-        const response = await fetch(
-          "https://gpzyo7nv2d.execute-api.ap-northeast-2.amazonaws.com/ReadNow"
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const data = await response.json();
-        setWordsAtom(data); // 데이터 가져와서 Recoil 상태에 저장
-        setFilteredWords(data.slice(0, visibleCount)); // 초기 20개 필터된 단어로 설정
-      } catch (error) {
-        console.error("Error loading words:", error);
-      }
+    const getWords = async () => {
+      const data = await fetchWords();
+      setWordsAtom(data); // 데이터 가져와서 Recoil 상태에 저장
+      setFilteredWords(data.slice(0, visibleCount));
     };
 
     if (words.length === 0) {
-      fetchWords(); // 데이터 가져오기
+      getWords();
     } else {
       setFilteredWords(words.slice(0, visibleCount)); // wordsAtom에 값이 있을 경우 초기 20개로 설정
     }

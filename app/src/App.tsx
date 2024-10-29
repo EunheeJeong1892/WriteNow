@@ -11,7 +11,8 @@ import Intro from "./pages/intro";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { answersAtom, progressBarVisibleAtom, wordsAtom } from "./atoms";
 import FullScreenProgressBar from "./components/FullScreenProgressBar";
-import { AnswerCardProps } from "./types/types";
+import { fetchAnswers } from "./api/readNowAPI";
+import { fetchWords } from "./api/libraryAPI";
 
 function App() {
   const setAnswerList = useSetRecoilState(answersAtom);
@@ -19,46 +20,18 @@ function App() {
   const isVisible = useRecoilValue(progressBarVisibleAtom);
 
   useEffect(() => {
-    const fetchAnswers = async () => {
-      try {
-        const response = await fetch(
-          "https://tqx65zlmb5.execute-api.ap-northeast-2.amazonaws.com/Answers"
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const data = await response.json();
-        const sortedData = data.sort(
-          (a: AnswerCardProps, b: AnswerCardProps) => {
-            return (
-              new Date(b.registDate).getTime() -
-              new Date(a.registDate).getTime()
-            );
-          }
-        );
-        setAnswerList(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+    const getAnswers = async () => {
+      const data = await fetchAnswers();
+      setAnswerList(data);
     };
 
-    const fetchWords = async () => {
-      try {
-        const response = await fetch(
-          "https://gpzyo7nv2d.execute-api.ap-northeast-2.amazonaws.com/ReadNow"
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const data = await response.json();
-        setWordList(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+    const getWords = async () => {
+      const data = await fetchWords();
+      setWordList(data);
     };
 
-    fetchAnswers();
-    fetchWords();
+    getAnswers();
+    getWords();
   }, [setAnswerList, setWordList]);
 
   return (

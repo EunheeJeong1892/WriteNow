@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import Header from "../components/header";
-import { AnswerCardProps, WordsWithImagesProps } from "../types/types";
+import { WordsWithImagesProps } from "../types/types";
 import { Helmet } from "react-helmet-async";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { answersAtom } from "../atoms";
 import Outcome from "../components/outcome";
 import AnswerList from "../components/readNow/answerList";
 import AnswerCard from "../components/readNow/answerCard";
+import { fetchAnswers } from "../api/readNowAPI";
 
 function ReadNow() {
   const [selectedCardId, setSelectedCardId] = useState<number | null>(null); // 추가된 상태
@@ -24,32 +25,13 @@ function ReadNow() {
   };
 
   useEffect(() => {
-    const fetchAnswers = async () => {
-      try {
-        const response = await fetch(
-          "https://tqx65zlmb5.execute-api.ap-northeast-2.amazonaws.com/Answers"
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const data = await response.json();
-        const sortedData = data.sort(
-          (a: AnswerCardProps, b: AnswerCardProps) => {
-            return (
-              new Date(b.registDate).getTime() -
-              new Date(a.registDate).getTime()
-            );
-          }
-        );
-        setAnswerList(sortedData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+    const getAnswers = async () => {
+      const data = await fetchAnswers();
+      setAnswerList(data);
     };
 
     if (cards.length === 0) {
-      // wordsAtom에 값이 없을 때만 API 호출
-      fetchAnswers(); // 데이터 가져오기
+      getAnswers(); // 데이터 가져오기
     }
   }, [setAnswerList, cards]);
 
