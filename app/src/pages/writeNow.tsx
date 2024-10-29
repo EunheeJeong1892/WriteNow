@@ -7,6 +7,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { progressBarVisibleAtom, wordsAtom } from "../atoms";
 import { UnderlinedWord, WordProps } from "../types/types";
 import { useNavigate } from "react-router-dom";
+import { postAnswer } from "../api/answerAPI";
 
 interface PopupImage {
   src: string;
@@ -14,10 +15,10 @@ interface PopupImage {
 }
 
 function WriteNow() {
-  const editableDiv = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLDivElement>(null);
+  const displayMenuRef = useRef<HTMLDivElement>(null);
   const [popupImages, setPopupImages] = useState<PopupImage[]>([]);
   const [displayedWords, setDisplayedWords] = useState<Set<string>>(new Set());
-  const [inputText, setInputText] = useState<string>(""); // 상태로 텍스트 관리
   const [showOutcome, setShowOutcome] = useState<boolean>(false); // Outcome 표시 상태
   const wordList = useRecoilValue(wordsAtom);
   const [hasSubmitted, setHasSubmitted] = useState(false); // 방어 코드 추가
@@ -27,40 +28,30 @@ function WriteNow() {
   >([]); // 단어와 이미지 정보 저장
 
   const uniqueWords = (array: UnderlinedWord[]) => {
-    const seen = new Set<string>(); // Set to track seen words
+    const seen = new Set<string>();
     return array.filter((item) => {
       const word = item.word;
       if (seen.has(word)) {
-        return false; // If word is already seen, exclude it
+        return false;
       }
-      seen.add(word); // Mark word as seen
-      return true; // Keep the first occurrence
+      seen.add(word);
+      return true;
     });
   };
 
-  const postAnswer = async (questionID: number, message: string) => {
+  const submitAnswer = async (questionID: number) => {
     try {
       if (hasSubmitted) return;
       setProgressBarVisible(true);
 
-      const response = await fetch(
-        "https://tqx65zlmb5.execute-api.ap-northeast-2.amazonaws.com/Answers",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            questionID,
-            message,
-            wordsWithImages: uniqueWords(
-              underlinedWordsData.sort((a, b) => a.position - b.position)
-            ),
-          }),
-        }
+      const message = inputRef.current?.innerText.trim() || "";
+      const wordsWithImages = uniqueWords(
+        underlinedWordsData.sort((a, b) => a.position - b.position)
       );
 
-      if (response.ok) {
+      const result = await postAnswer(questionID, message, wordsWithImages);
+
+      if (result) {
         setHasSubmitted(true);
         setShowOutcome(true);
       }
@@ -71,52 +62,61 @@ function WriteNow() {
     }
   };
 
-  const checkText = () => {
-    if (!editableDiv.current) return;
+  const handleInput = () => {
+    if (!inputRef.current) return;
+    if (inputRef.current.innerText === "") {
+      clearData();
+    } else {
+      let formattedText = inputRef.current.innerText;
+      const plainText = inputRef.current?.innerText || "";
+      let newUnderlinedWordsData: UnderlinedWord[] = []; // 새로운 데이터를 담을 배열
 
-    let formattedText = editableDiv.current.innerText;
-    const plainText = editableDiv.current?.innerText || "";
-    let newUnderlinedWordsData: UnderlinedWord[] = []; // 새로운 데이터를 담을 배열
+      for (const item of wordList) {
+        const regex = new RegExp(`(${item.word})`, "g");
+        formattedText = formattedText.replace(
+          regex,
+          '<span style="border-bottom: 2px solid #007AFF;">$1</span>'
+        );
 
-    for (const item of wordList) {
-      const regex = new RegExp(`(${item.word})`, "g");
-      formattedText = formattedText.replace(
-        regex,
-        '<span style="border-bottom: 2px solid #00D364;">$1</span>'
-      );
+        const wordPositions = [...plainText.matchAll(regex)].map(
+          (match) => match.index
+        );
 
-      const wordPositions = [...plainText.matchAll(regex)].map(
-        (match) => match.index
-      );
-
-      if (wordPositions.length > 0) {
-        wordPositions.forEach((position) => {
-          if (position !== undefined) {
-            newUnderlinedWordsData.push({
-              word: item.word,
-              position, // 단어가 시작하는 위치 (HTML을 제외한 실제 텍스트에서의 위치)
-              imageSrc: `https://daqsct7lk85c0.cloudfront.net/public/words/${item.link}`, // 이미지 링크
-            });
-          }
-        });
+        if (wordPositions.length > 0) {
+          wordPositions.forEach((position) => {
+            if (position !== undefined) {
+              newUnderlinedWordsData.push({
+                word: item.word,
+                position, // 단어가 시작하는 위치 (HTML을 제외한 실제 텍스트에서의 위치)
+                imageSrc: `https://daqsct7lk85c0.cloudfront.net/public/words/${item.link}`, // 이미지 링크
+              });
+            }
+          });
+        }
       }
+
+      setUnderlinedWordsData(newUnderlinedWordsData); // 새로운 데이터를 상태로 설정
+
+      let originText = inputRef.current.innerText;
+      const words = originText.split(/\s+/);
+      words.forEach((word) => {
+        const finded: WordProps[] | [] =
+          wordList.filter((o) => o.word === word) || [];
+        if (finded.length > 0 && !displayedWords.has(word)) {
+          showPopupImage(word, finded);
+          setDisplayedWords((prev) => new Set(prev).add(word));
+        }
+      });
+
+      inputRef.current.innerHTML = formattedText;
+      setCaretToEnd(inputRef.current);
     }
+  };
 
-    setUnderlinedWordsData(newUnderlinedWordsData); // 새로운 데이터를 상태로 설정
-
-    let originText = editableDiv.current.innerText;
-    const words = originText.split(/\s+/);
-    words.forEach((word) => {
-      const finded: WordProps[] | [] =
-        wordList.filter((o) => o.word === word) || [];
-      if (finded.length > 0 && !displayedWords.has(word)) {
-        showPopupImage(word, finded);
-        setDisplayedWords((prev) => new Set(prev).add(word));
-      }
-    });
-
-    editableDiv.current.innerHTML = formattedText;
-    setCaretToEnd(editableDiv.current);
+  const clearData = () => {
+    setPopupImages([]);
+    setDisplayedWords(new Set());
+    setUnderlinedWordsData([]);
   };
 
   const showPopupImage = (word: string, finded: WordProps[]) => {
@@ -182,15 +182,22 @@ function WriteNow() {
       {showOutcome && (
         <Outcome
           images={underlinedWordsData}
-          message={inputText}
+          message={inputRef?.current?.innerText.trim() || ""}
           endCallback={handleOutcomeEnd}
+          question={displayMenuRef.current?.innerText}
         />
       )}{" "}
       {/* Outcome 컴포넌트를 동적으로 렌더링 */}
       <Helmet>
         <title>Write Now</title>
       </Helmet>
-      <Header></Header>
+      <Header
+        showInput={true}
+        onInputAction={handleInput}
+        onSubmitAction={submitAnswer}
+        inputRef={inputRef}
+        displayMenuRef={displayMenuRef}
+      ></Header>
       <div className={styles.typeNowContainer}>
         <div className="popup" id="popup">
           {popupImages.map((image, index) => (

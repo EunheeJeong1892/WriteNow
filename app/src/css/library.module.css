@@ -12,7 +12,7 @@
   flex-direction: column;
   align-items: flex-start;
   position: relative;
-  width: fit-content;
+  width: 268px;
 }
 
 .rectangle {
@@ -41,4 +41,26 @@
   line-height: 30px; /* 150% */
   letter-spacing: -0.6px;
   white-space: nowrap;
+}
+
+.description {
+  font-size: 16px;
+  line-height: 26px;
+  letter-spacing: -0.48px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.description-expanded {
+  max-height: 500px;
+}
+
+.arrow-down {
+  cursor: pointer;
+}
+
+.arrow-up {
+  cursor: pointer;
+  transform: rotate(180deg);
 }

@@ -1,6 +1,5 @@
-<svg width="25" height="28" viewBox="0 0 25 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="skip">
-<path id="Polygon 2" d="M20.375 13.0998C21.0417 13.4847 21.0417 14.447 20.375 14.8319L2 25.4407C1.33333 25.8256 0.499999 25.3445 0.499999 24.5747L0.5 3.35705C0.5 2.58725 1.33333 2.10612 2 2.49102L20.375 13.0998Z" fill="white"/>
-<rect id="Rectangle 20" x="20.75" y="0.875" width="3.75" height="26.25" rx="1" fill="white"/>
+<svg width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Actions / Controls / skip--forward--filled / 32">
+<path id="Fill" fill-rule="evenodd" clip-rule="evenodd" d="M28 4.5H30V28.5H28V4.5ZM5 28.5C4.44772 28.5 4 28.0523 4 27.5V5.5C4.00016 5.14261 4.19104 4.81247 4.50069 4.63402C4.81035 4.45557 5.1917 4.45595 5.501 4.635L24.501 15.635C24.8094 15.8139 24.9992 16.1435 24.9992 16.5C24.9992 16.8565 24.8094 17.1861 24.501 17.365L5.501 28.365C5.34882 28.4534 5.17598 28.5 5 28.5Z" fill="white"/>
 </g>
 </svg>

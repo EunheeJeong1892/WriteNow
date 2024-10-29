@@ -7,14 +7,13 @@ import readNowStyle from "../../css/readNow.module.css";
 const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
   questionId,
   message,
-  regDate,
+  registDate,
   onClick,
   wordsWithImages,
   onPlayBtnClick,
 }) => {
   const questionMessage =
     QUESTIONS.find((q) => q.id === questionId)?.message || "No message found";
-  // 메시지를 wordsWithImages를 바탕으로 가공하여 단어에 underline과 tooltip을 추가하는 함수
   const renderMessageWithImages = () => {
     if (!wordsWithImages) return message;
 
@@ -33,10 +32,10 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
       // 언더라인 처리된 단어 추가
       result.push(
         <span key={`word-${index}`} className={styles.wordWithImage}>
-          <span className={styles.readCardUnderline}>
+          <span className={readNowStyle.readCardUnderline}>
             {word}
             {/* 툴팁을 마우스 오버 시 표시 */}
-            <div className={styles.readCardImageTooltip}>
+            <div className={readNowStyle.readCardImageTooltip}>
               <img src={imageSrc} alt="Image Tooltip" />
             </div>
           </span>
@@ -73,11 +72,13 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
             <div className={readNowStyle.answerCardQuestion}>
               {questionMessage}
             </div>
-            <div className={readNowStyle.answerCardRegDate}>{regDate}</div>
+            <div className={readNowStyle.answerCardregistDate}>
+              {registDate}
+            </div>
           </div>
           <svg
             onClick={handlePlayBtn}
-            className={`${styles.readCardPlayBtn} ${styles.playButton}`}
+            className={`${readNowStyle.playButton}`}
             xmlns="http://www.w3.org/2000/svg"
             width="62"
             height="62"
@@ -85,7 +86,7 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
             fill="none"
           >
             <g filter="url(#filter0_d_426_846)">
-              <circle className={styles.circle} cx="31" cy="27" r="23" />
+              <circle className={readNowStyle.circle} cx="31" cy="27" r="23" />
               <path
                 d="M42.5187 25.9406C43.1892 26.3247 43.1892 27.2918 42.5187 27.676L27.1303 36.4922C26.4637 36.8742 25.6332 36.3928 25.6332 35.6245L25.6332 17.992C25.6332 17.2237 26.4637 16.7424 27.1303 17.1243L42.5187 25.9406Z"
                 fill="white"

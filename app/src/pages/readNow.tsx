@@ -7,6 +7,9 @@ import { answersAtom } from "../atoms";
 import Outcome from "../components/outcome";
 import AnswerList from "../components/readNow/answerList";
 import AnswerCard from "../components/readNow/answerCard";
+import { fetchAnswers } from "../api/answerAPI";
+import { QUESTIONS } from "../constants/constants";
+import readNowStyles from "../css/readNow.module.css";
 
 function ReadNow() {
   const [selectedCardId, setSelectedCardId] = useState<number | null>(null); // 추가된 상태
@@ -24,24 +27,13 @@ function ReadNow() {
   };
 
   useEffect(() => {
-    const fetchAnswers = async () => {
-      try {
-        const response = await fetch(
-          "https://tqx65zlmb5.execute-api.ap-northeast-2.amazonaws.com/Answers"
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const data = await response.json();
-        setAnswerList(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+    const getAnswers = async () => {
+      const data = await fetchAnswers();
+      setAnswerList(data);
     };
 
     if (cards.length === 0) {
-      // wordsAtom에 값이 없을 때만 API 호출
-      fetchAnswers(); // 데이터 가져오기
+      getAnswers(); // 데이터 가져오기
     }
   }, [setAnswerList, cards]);
 
@@ -67,16 +59,23 @@ function ReadNow() {
     currentPostIndex > 0 ? cards[currentPostIndex - 1] : null;
   const nextCards = cards.slice(currentPostIndex + 1, currentPostIndex + 3);
 
+  const getQuestionText = () => {
+    return (
+      QUESTIONS.find((q: any) => q.id === cards[currentPostIndex].questionID)
+        ?.message || "No message found"
+    );
+  };
   return (
-    <div>
+    <div className={readNowStyles.readNowContainer}>
       {showOutcome && outcomeData && (
         <Outcome
           images={outcomeData.wordsWithImages}
           message={outcomeData.message}
           endCallback={handleOutcomeEnd}
+          question={getQuestionText()}
         />
       )}{" "}
-      <Header />
+      <Header showInput={false} />
       <Helmet>
         <title>Read Now</title>
       </Helmet>
@@ -84,7 +83,7 @@ function ReadNow() {
         {previousPost && (
           <AnswerList
             questionId={previousPost.questionID}
-            regDate={previousPost.registDate}
+            registDate={previousPost.registDate}
             onClick={() => handlePostClick(currentPostIndex - 1)}
           ></AnswerList>
         )}
@@ -92,7 +91,7 @@ function ReadNow() {
           <AnswerCard
             questionId={cards[currentPostIndex].questionID}
             message={cards[currentPostIndex].message}
-            regDate={cards[currentPostIndex].registDate}
+            registDate={cards[currentPostIndex].registDate}
             wordsWithImages={cards[currentPostIndex].wordsWithImages}
             onPlayBtnClick={handlePlayBtnClick}
             onClick={() => {
@@ -104,7 +103,7 @@ function ReadNow() {
           {nextCards.map((card, index) => (
             <AnswerList
               questionId={card.questionID}
-              regDate={card.registDate}
+              registDate={card.registDate}
               onClick={() => handlePostClick(currentPostIndex + index + 1)}
             ></AnswerList>
           ))}
