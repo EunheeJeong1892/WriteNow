@@ -27,7 +27,7 @@ function Intro() {
   return (
     <>
       <Helmet>
-        <title>Type Now</title>
+        <title>Write Now</title>
       </Helmet>
       <div
         style={{
