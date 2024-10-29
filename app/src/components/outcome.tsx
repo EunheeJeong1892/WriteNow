@@ -53,7 +53,7 @@ const Outcome: React.FC<OutcomeProps> = ({
     }
     if (sliderEnded) {
       pauseRandomMusic();
-      //endCallback();
+      endCallback();
       return;
     }
 
