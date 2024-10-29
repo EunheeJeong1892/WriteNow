@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Header from "../components/header";
-import { WordsWithImagesProps } from "../types/types";
+import { AnswerCardProps, WordsWithImagesProps } from "../types/types";
 import { Helmet } from "react-helmet-async";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { answersAtom } from "../atoms";
@@ -33,7 +33,15 @@ function ReadNow() {
           throw new Error("Failed to fetch data");
         }
         const data = await response.json();
-        setAnswerList(data);
+        const sortedData = data.sort(
+          (a: AnswerCardProps, b: AnswerCardProps) => {
+            return (
+              new Date(b.registDate).getTime() -
+              new Date(a.registDate).getTime()
+            );
+          }
+        );
+        setAnswerList(sortedData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -84,7 +92,7 @@ function ReadNow() {
         {previousPost && (
           <AnswerList
             questionId={previousPost.questionID}
-            regDate={previousPost.registDate}
+            registDate={previousPost.registDate}
             onClick={() => handlePostClick(currentPostIndex - 1)}
           ></AnswerList>
         )}
@@ -92,7 +100,7 @@ function ReadNow() {
           <AnswerCard
             questionId={cards[currentPostIndex].questionID}
             message={cards[currentPostIndex].message}
-            regDate={cards[currentPostIndex].registDate}
+            registDate={cards[currentPostIndex].registDate}
             wordsWithImages={cards[currentPostIndex].wordsWithImages}
             onPlayBtnClick={handlePlayBtnClick}
             onClick={() => {
@@ -104,7 +112,7 @@ function ReadNow() {
           {nextCards.map((card, index) => (
             <AnswerList
               questionId={card.questionID}
-              regDate={card.registDate}
+              registDate={card.registDate}
               onClick={() => handlePostClick(currentPostIndex + index + 1)}
             ></AnswerList>
           ))}

@@ -7,14 +7,13 @@ import readNowStyle from "../../css/readNow.module.css";
 const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
   questionId,
   message,
-  regDate,
+  registDate,
   onClick,
   wordsWithImages,
   onPlayBtnClick,
 }) => {
   const questionMessage =
     QUESTIONS.find((q) => q.id === questionId)?.message || "No message found";
-  // 메시지를 wordsWithImages를 바탕으로 가공하여 단어에 underline과 tooltip을 추가하는 함수
   const renderMessageWithImages = () => {
     if (!wordsWithImages) return message;
 
@@ -73,11 +72,13 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
             <div className={readNowStyle.answerCardQuestion}>
               {questionMessage}
             </div>
-            <div className={readNowStyle.answerCardRegDate}>{regDate}</div>
+            <div className={readNowStyle.answerCardregistDate}>
+              {registDate}
+            </div>
           </div>
           <svg
             onClick={handlePlayBtn}
-            className={`${styles.readCardPlayBtn} ${styles.playButton}`}
+            className={`${styles.playButton}`}
             xmlns="http://www.w3.org/2000/svg"
             width="62"
             height="62"

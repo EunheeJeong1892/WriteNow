@@ -296,8 +296,13 @@
 .readCardContainer .playButton {
   margin-left: auto;
 }
-.readCardContainer .playButton:hover .circle {
-  fill: #00d364;
+
+.playButton .circle {
+  fill: #c2c2c2;
+}
+
+.playButton:hover .circle {
+  fill: #007aff;
 }
 
 .readCardUnderline {

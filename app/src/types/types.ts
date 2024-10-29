@@ -7,7 +7,7 @@ export interface WordsWithImagesProps {
 export interface AnswerCardProps {
   questionId: number;
   message: string;
-  regDate: string;
+  registDate: string;
   onClick: () => void;
   wordsWithImages: WordsWithImagesProps[];
 }
@@ -23,7 +23,7 @@ export interface ReadCardWithWordClickProps extends AnswerCardProps {
 
 export interface AnswerListProps {
   questionId: number;
-  regDate: string;
+  registDate: string;
   onClick: () => void;
 }
 

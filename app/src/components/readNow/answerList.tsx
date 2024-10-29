@@ -5,7 +5,7 @@ import { QUESTIONS } from "../../constants/constants";
 
 const AnswerList: React.FC<AnswerListProps> = ({
   questionId,
-  regDate,
+  registDate,
   onClick,
 }) => {
   const questionMessage =
@@ -13,12 +13,10 @@ const AnswerList: React.FC<AnswerListProps> = ({
   const handleClick = () => {
     onClick();
   };
-  console.log("--");
-  console.log(questionId);
   return (
     <div onClick={handleClick} className={readNowStyle.answerListContainr}>
       <div className={readNowStyle.answerListQuestion}>{questionMessage}</div>
-      <div className={readNowStyle.answerListReqDate}>{regDate}</div>
+      <div className={readNowStyle.answerListReqDate}>{registDate}</div>
     </div>
   );
 };
