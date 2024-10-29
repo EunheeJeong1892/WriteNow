@@ -12,24 +12,15 @@ import { fetchWords } from "../api/libraryAPI";
 
 function Library() {
   const [inputText, setInputText] = useState<string>(""); // 상태로 텍스트 관리
-  const searchDiv = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const setWordsAtom = useSetRecoilState(wordsAtom);
   const words = useRecoilValue(wordsAtom);
   const [filteredWords, setFilteredWords] = useState<WordProps[]>(words); // 필터된 이미지 상태
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState<number>(28); // 현재 보이는 이미지 수
-  const [isFocused, setIsFocused] = useState<boolean>(false); // 포커스 상태
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputText(e.target.value); // 입력된 값을 상태로 설정
-  };
-
-  useEffect(() => {
-    checkText();
-  }, [inputText]);
 
   // 처음 페이지가 로드될 때 words 데이터를 가져와서 Recoil 상태에 저장
   useEffect(() => {
@@ -46,11 +37,14 @@ function Library() {
     }
   }, [setWordsAtom, words, visibleCount]); // `setWordsAtom`, `words`, `visibleCount`에 의존
 
-  const checkText = () => {
-    const filtered = words.filter((word) =>
-      word.word.includes(inputText.trim())
-    );
-    setFilteredWords(filtered.slice(0, visibleCount)); // 필터링된 단어의 수에 맞게 설정
+  const handleInput = () => {
+    if (inputRef && inputRef.current) {
+      setInputText(inputRef.current.innerText);
+      const filtered = words.filter((word) =>
+        word.word.includes(inputText.trim())
+      );
+      setFilteredWords(filtered.slice(0, visibleCount)); // 필터링된 단어의 수에 맞게 설정
+    }
   };
 
   const loadMoreWords = () => {
@@ -59,35 +53,20 @@ function Library() {
 
   return (
     <>
-      <Header showInput={true} />
+      <Header
+        showInput={true}
+        inputRef={inputRef}
+        onInputAction={handleInput}
+      />
       <Helmet>
         <title>Library</title>
       </Helmet>
       <div className={styles.typeNowContainer}>
-        {/*}
-        <div className={styles.liveNowSearchWrapper}>
-          <input
-            type={"text"}
-            onChange={handleInput}
-            placeholder={`검색어를 입력하세요.`}
-            ref={searchDiv}
-            className={`${styles.liveNowSearch} ${
-              inputText ? styles.liveNowSearchActive : ""
-            }`}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-          />
-          {(isFocused || inputText) && (
-            <div className={styles.searchIcon}>
-              <img src={"ic_search.png"} alt="Search" />
-            </div>
-          )}
-        </div>
-        */}
         <div className={libraryStyles["frame-screen"]}>
           {filteredWords.length > 0 &&
             filteredWords.map((word, index) => (
               <Frame
+                key={index}
                 word={word.word}
                 description={word.description}
                 link={word.link}

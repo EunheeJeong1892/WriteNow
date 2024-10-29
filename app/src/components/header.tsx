@@ -6,14 +6,16 @@ import { QUESTIONS } from "../constants/constants";
 
 interface HeaderProps {
   showInput: boolean;
-  onInputAction?: (input: string) => void;
+  onInputAction?: () => void;
   inputRef?: React.RefObject<HTMLDivElement>;
+  displayMenuRef?: React.RefObject<HTMLDivElement>;
 }
 
 const Header: React.FC<HeaderProps> = ({
   showInput,
   onInputAction,
   inputRef,
+  displayMenuRef,
 }) => {
   const navigate = useNavigate();
   const [currentMenu, setCurrentMenu] = useState<string>("");
@@ -53,22 +55,23 @@ const Header: React.FC<HeaderProps> = ({
 
   const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
     const newText = e.currentTarget.innerText;
-    setInputText(newText);
-    if (onInputAction) {
-      onInputAction(newText); // 페이지별 로직 호출
-    }
-  };
-
-  const handleInput2 = (e: React.FormEvent<HTMLDivElement>) => {
-    const newText = e.currentTarget.innerText;
-    if (newText) {
+    if (newText && currentMenu === "writeNow") {
       setDisplayedMenu(placeholder);
     } else {
       setDisplayedMenu(currentMenu);
     }
-
     if (!isComposing) {
-      setInputText(e.currentTarget.innerText);
+      if (onInputAction) {
+        onInputAction();
+      }
+    }
+  };
+
+  const handleCompositionEnd = (e: React.FormEvent<HTMLDivElement>) => {
+    setIsComposing(false);
+    setInputText(e.currentTarget.innerText);
+    if (onInputAction) {
+      onInputAction();
     }
   };
 
@@ -82,13 +85,18 @@ const Header: React.FC<HeaderProps> = ({
         inputRef.current.innerText = "";
       }
     }
+    if (onInputAction) {
+      onInputAction();
+    }
   };
 
   return (
     <div className={headerStyle.header}>
       <header className={headerStyle.class}>
         <div className={headerStyle.logo}>
-          <div className={headerStyle["text-wrapper"]}>{displayedMenu}</div>
+          <div className={headerStyle["text-wrapper"]} ref={displayMenuRef}>
+            {displayedMenu}
+          </div>
           {currentMenu === "writeNow" && (
             <ActionsOperations
               fill="ic_refresh.svg"
@@ -125,9 +133,7 @@ const Header: React.FC<HeaderProps> = ({
           onInput={handleInput}
           onCompositionStart={() => setIsComposing(true)}
           onCompositionEnd={(e) => {
-            setIsComposing(false);
-            setInputText(e.currentTarget.innerText);
-            //checkText();
+            handleCompositionEnd(e);
           }}
           data-placeholder={`${placeholder}`}
         ></div>

@@ -8,6 +8,8 @@ import Outcome from "../components/outcome";
 import AnswerList from "../components/readNow/answerList";
 import AnswerCard from "../components/readNow/answerCard";
 import { fetchAnswers } from "../api/readNowAPI";
+import { QUESTIONS } from "../constants/constants";
+import readNowStyles from "../css/readNow.module.css";
 
 function ReadNow() {
   const [selectedCardId, setSelectedCardId] = useState<number | null>(null); // 추가된 상태
@@ -57,13 +59,20 @@ function ReadNow() {
     currentPostIndex > 0 ? cards[currentPostIndex - 1] : null;
   const nextCards = cards.slice(currentPostIndex + 1, currentPostIndex + 3);
 
+  const getQuestionText = () => {
+    return (
+      QUESTIONS.find((q: any) => q.id === cards[currentPostIndex].questionID)
+        ?.message || "No message found"
+    );
+  };
   return (
-    <div>
+    <div className={readNowStyles.readNowContainer}>
       {showOutcome && outcomeData && (
         <Outcome
           images={outcomeData.wordsWithImages}
           message={outcomeData.message}
           endCallback={handleOutcomeEnd}
+          question={getQuestionText()}
         />
       )}{" "}
       <Header showInput={false} />

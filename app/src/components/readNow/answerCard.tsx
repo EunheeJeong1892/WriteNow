@@ -32,10 +32,10 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
       // 언더라인 처리된 단어 추가
       result.push(
         <span key={`word-${index}`} className={styles.wordWithImage}>
-          <span className={styles.readCardUnderline}>
+          <span className={readNowStyle.readCardUnderline}>
             {word}
             {/* 툴팁을 마우스 오버 시 표시 */}
-            <div className={styles.readCardImageTooltip}>
+            <div className={readNowStyle.readCardImageTooltip}>
               <img src={imageSrc} alt="Image Tooltip" />
             </div>
           </span>
@@ -78,7 +78,7 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
           </div>
           <svg
             onClick={handlePlayBtn}
-            className={`${styles.playButton}`}
+            className={`${readNowStyle.playButton}`}
             xmlns="http://www.w3.org/2000/svg"
             width="62"
             height="62"
@@ -86,7 +86,7 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
             fill="none"
           >
             <g filter="url(#filter0_d_426_846)">
-              <circle className={styles.circle} cx="31" cy="27" r="23" />
+              <circle className={readNowStyle.circle} cx="31" cy="27" r="23" />
               <path
                 d="M42.5187 25.9406C43.1892 26.3247 43.1892 27.2918 42.5187 27.676L27.1303 36.4922C26.4637 36.8742 25.6332 36.3928 25.6332 35.6245L25.6332 17.992C25.6332 17.2237 26.4637 16.7424 27.1303 17.1243L42.5187 25.9406Z"
                 fill="white"

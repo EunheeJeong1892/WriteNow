@@ -15,6 +15,7 @@ interface PopupImage {
 
 function WriteNow() {
   const inputRef = useRef<HTMLDivElement>(null);
+  const displayMenuRef = useRef<HTMLDivElement>(null);
   const [popupImages, setPopupImages] = useState<PopupImage[]>([]);
   const [displayedWords, setDisplayedWords] = useState<Set<string>>(new Set());
   const [inputText, setInputText] = useState<string>(""); // 상태로 텍스트 관리
@@ -71,52 +72,61 @@ function WriteNow() {
     }
   };
 
-  const checkText = () => {
+  const handleInput = () => {
     if (!inputRef.current) return;
+    if (inputRef.current.innerText === "") {
+      clearData();
+    } else {
+      let formattedText = inputRef.current.innerText;
+      const plainText = inputRef.current?.innerText || "";
+      let newUnderlinedWordsData: UnderlinedWord[] = []; // 새로운 데이터를 담을 배열
 
-    let formattedText = inputRef.current.innerText;
-    const plainText = inputRef.current?.innerText || "";
-    let newUnderlinedWordsData: UnderlinedWord[] = []; // 새로운 데이터를 담을 배열
+      for (const item of wordList) {
+        const regex = new RegExp(`(${item.word})`, "g");
+        formattedText = formattedText.replace(
+          regex,
+          '<span style="border-bottom: 2px solid #007AFF;">$1</span>'
+        );
 
-    for (const item of wordList) {
-      const regex = new RegExp(`(${item.word})`, "g");
-      formattedText = formattedText.replace(
-        regex,
-        '<span style="border-bottom: 2px solid #00D364;">$1</span>'
-      );
+        const wordPositions = [...plainText.matchAll(regex)].map(
+          (match) => match.index
+        );
 
-      const wordPositions = [...plainText.matchAll(regex)].map(
-        (match) => match.index
-      );
-
-      if (wordPositions.length > 0) {
-        wordPositions.forEach((position) => {
-          if (position !== undefined) {
-            newUnderlinedWordsData.push({
-              word: item.word,
-              position, // 단어가 시작하는 위치 (HTML을 제외한 실제 텍스트에서의 위치)
-              imageSrc: `https://daqsct7lk85c0.cloudfront.net/public/words/${item.link}`, // 이미지 링크
-            });
-          }
-        });
+        if (wordPositions.length > 0) {
+          wordPositions.forEach((position) => {
+            if (position !== undefined) {
+              newUnderlinedWordsData.push({
+                word: item.word,
+                position, // 단어가 시작하는 위치 (HTML을 제외한 실제 텍스트에서의 위치)
+                imageSrc: `https://daqsct7lk85c0.cloudfront.net/public/words/${item.link}`, // 이미지 링크
+              });
+            }
+          });
+        }
       }
+
+      setUnderlinedWordsData(newUnderlinedWordsData); // 새로운 데이터를 상태로 설정
+
+      let originText = inputRef.current.innerText;
+      const words = originText.split(/\s+/);
+      words.forEach((word) => {
+        const finded: WordProps[] | [] =
+          wordList.filter((o) => o.word === word) || [];
+        if (finded.length > 0 && !displayedWords.has(word)) {
+          showPopupImage(word, finded);
+          setDisplayedWords((prev) => new Set(prev).add(word));
+        }
+      });
+
+      inputRef.current.innerHTML = formattedText;
+      setCaretToEnd(inputRef.current);
     }
+  };
 
-    setUnderlinedWordsData(newUnderlinedWordsData); // 새로운 데이터를 상태로 설정
-
-    let originText = inputRef.current.innerText;
-    const words = originText.split(/\s+/);
-    words.forEach((word) => {
-      const finded: WordProps[] | [] =
-        wordList.filter((o) => o.word === word) || [];
-      if (finded.length > 0 && !displayedWords.has(word)) {
-        showPopupImage(word, finded);
-        setDisplayedWords((prev) => new Set(prev).add(word));
-      }
-    });
-
-    inputRef.current.innerHTML = formattedText;
-    setCaretToEnd(inputRef.current);
+  const clearData = () => {
+    setPopupImages([]);
+    setDisplayedWords(new Set());
+    setUnderlinedWordsData([]);
   };
 
   const showPopupImage = (word: string, finded: WordProps[]) => {
@@ -177,8 +187,6 @@ function WriteNow() {
     navigate(0);
   };
 
-  const handleInput = () => {};
-
   return (
     <>
       {showOutcome && (
@@ -186,6 +194,7 @@ function WriteNow() {
           images={underlinedWordsData}
           message={inputText}
           endCallback={handleOutcomeEnd}
+          question={displayMenuRef.current?.innerText}
         />
       )}{" "}
       {/* Outcome 컴포넌트를 동적으로 렌더링 */}
@@ -196,6 +205,7 @@ function WriteNow() {
         showInput={true}
         onInputAction={handleInput}
         inputRef={inputRef}
+        displayMenuRef={displayMenuRef}
       ></Header>
       <div className={styles.typeNowContainer}>
         <div className="popup" id="popup">
