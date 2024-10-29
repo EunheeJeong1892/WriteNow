@@ -5,8 +5,8 @@ import { Helmet } from "react-helmet-async";
 import { WordProps } from "../types/types";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { wordsAtom } from "../atoms";
-import AddWordModal from "../components/addWordModal";
-import { default as Frame } from "../components/libraryFrame";
+import AddWordModal from "../components/library/addWordModal";
+import { default as Frame } from "../components/library/libraryFrame";
 import libraryStyles from "../css/library.module.css";
 
 function Library() {
