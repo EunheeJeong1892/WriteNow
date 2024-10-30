@@ -56,13 +56,13 @@ const Header: React.FC<HeaderProps> = ({
   };
 
   const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
-    const newText = e.currentTarget.innerText;
-    if (newText && currentMenu === "writeNow") {
+    if (e.currentTarget.innerText && currentMenu === "writeNow") {
       setDisplayedMenu(placeholder);
     } else {
       setDisplayedMenu(currentMenu);
     }
     if (!isComposing) {
+      setInputText(e.currentTarget.innerText);
       if (onInputAction) {
         onInputAction();
       }
@@ -78,14 +78,11 @@ const Header: React.FC<HeaderProps> = ({
   };
 
   const handlePlaceholderRefresh = () => {
-    const randomIndex = Math.floor(Math.random() * placeholders.length);
-    setPlaceholderNum(randomIndex);
+    setPlaceholderNum(Math.floor(Math.random() * placeholders.length));
     setInputText("");
     setDisplayedMenu(currentMenu);
-    if (inputRef) {
-      if (inputRef.current) {
-        inputRef.current.innerText = "";
-      }
+    if (inputRef?.current) {
+      inputRef.current.innerText = "";
     }
     if (onInputAction) {
       onInputAction();

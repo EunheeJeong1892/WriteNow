@@ -38,12 +38,15 @@ function Library() {
   }, [setWordsAtom, words, visibleCount]); // `setWordsAtom`, `words`, `visibleCount`에 의존
 
   const handleInput = () => {
-    if (inputRef && inputRef.current) {
-      setInputText(inputRef.current.innerText);
+    const formatText = inputRef?.current?.innerText || "";
+    setInputText(formatText);
+    if (formatText != "") {
       const filtered = words.filter((word) =>
-        word.word.includes(inputText.trim())
+        word.word.includes(formatText.trim())
       );
       setFilteredWords(filtered.slice(0, visibleCount)); // 필터링된 단어의 수에 맞게 설정
+    } else {
+      setFilteredWords(words.slice(0, visibleCount)); // 필터링된 단어의 수에 맞게 설정
     }
   };
 
