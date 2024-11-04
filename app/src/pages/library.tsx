@@ -9,6 +9,7 @@ import AddWordModal from "../components/library/addWordModal";
 import { default as Frame } from "../components/library/libraryFrame";
 import libraryStyles from "../css/library.module.css";
 import { fetchWords } from "../api/libraryAPI";
+import AddWordFrame from "../components/library/addWordFrame";
 
 function Library() {
   const [inputText, setInputText] = useState<string>(""); // 상태로 텍스트 관리
@@ -76,12 +77,10 @@ function Library() {
                 registDate={word.registDate}
               ></Frame>
             ))}
-          {filteredWords.length === 0 && (
-            <p className={styles.noContent}>
-              아직 등록되지 않은 단어입니다.
-              <br />
-              아래의 + 버튼을 눌러 처음으로 단어를 등록해보세요!
-            </p>
+          {(filteredWords.length === 0 || filteredWords.length > 0) && (
+            <div onClick={openModal}>
+              <AddWordFrame></AddWordFrame>
+            </div>
           )}
         </div>
         {!inputText &&
