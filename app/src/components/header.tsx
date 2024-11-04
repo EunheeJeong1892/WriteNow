@@ -79,8 +79,11 @@ const Header: React.FC<HeaderProps> = ({
 
   const handlePlaceholderRefresh = () => {
     setPlaceholderNum(Math.floor(Math.random() * placeholders.length));
+    clearInput();
+  };
+
+  const clearInput = () => {
     setInputText("");
-    setDisplayedMenu(currentMenu);
     if (inputRef?.current) {
       inputRef.current.innerText = "";
     }
@@ -143,7 +146,7 @@ const Header: React.FC<HeaderProps> = ({
             }}
             data-placeholder={`${placeholder}`}
           ></div>
-          {inputText && (
+          {inputText && currentMenu === "writeNow" && (
             <svg
               onClick={handleSubmit}
               className={headerStyle.send}
@@ -165,6 +168,13 @@ const Header: React.FC<HeaderProps> = ({
                 fill="white"
               />
             </svg>
+          )}
+          {inputText && currentMenu === "library" && (
+            <img
+              onClick={clearInput}
+              className={headerStyle.send}
+              src="ic_remove.svg"
+            />
           )}
         </>
       )}

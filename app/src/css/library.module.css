@@ -64,3 +64,13 @@
   cursor: pointer;
   transform: rotate(180deg);
 }
+
+.addWordFrame {
+  width: 268px;
+  height: 268px;
+  background-color: #f8f8f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}

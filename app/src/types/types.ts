@@ -39,3 +39,9 @@ export interface UnderlinedWord {
   position: number;
   imageSrc: string;
 }
+
+export interface PopupImageProps {
+  left: number;
+  top: number;
+  images: string[];
+}

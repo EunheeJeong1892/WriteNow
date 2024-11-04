@@ -8,10 +8,12 @@ import { progressBarVisibleAtom, wordsAtom } from "../atoms";
 import { UnderlinedWord, WordProps } from "../types/types";
 import { useNavigate } from "react-router-dom";
 import { postAnswer } from "../api/answerAPI";
+import Popup from "../components/writeNow/popup";
 
 interface PopupImage {
-  src: string;
-  style: React.CSSProperties;
+  images: string[];
+  left: number;
+  top: number;
 }
 
 function WriteNow() {
@@ -123,40 +125,19 @@ function WriteNow() {
     const randomX = Math.max(0, Math.random() * (window.innerWidth - 500));
     const randomY = Math.max(
       0,
-      Math.random() * (window.innerHeight - 200) - 180
+      Math.random() * (window.innerHeight - 200) - 170
     );
 
     setPopupImages((prev) => {
       const baseLeft = randomX;
       const baseTop = randomY;
 
-      const newImages = finded.map((image, index) => ({
-        src: `https://daqsct7lk85c0.cloudfront.net/public/words/${image.link}`,
-        style: {
-          left: `${baseLeft}px`, // 이미지가 5px씩 오른쪽으로
-          top: `${baseTop}px`, // 이미지가 5px씩 아래로
-          transform: index === 0 ? "" : `rotate(5.922deg)`,
-          zIndex: index, // 순서대로 z-index 부여
-          display: "block",
-        },
-      }));
-
-      return [...prev, ...newImages];
-    });
-  };
-
-  const handleImageClick = (index: number) => {
-    setPopupImages((prev) => {
-      const clickedImage = prev[index];
-      const restImages = prev.filter((_, i) => i !== index);
-
-      return [
-        ...restImages,
-        {
-          ...clickedImage,
-          style: { ...clickedImage.style, zIndex: prev.length },
-        },
-      ];
+      const newImages: PopupImage = {
+        images: finded.map((o) => o.link),
+        left: baseLeft,
+        top: baseTop,
+      };
+      return [...prev, newImages];
     });
   };
 
@@ -201,14 +182,11 @@ function WriteNow() {
       <div className={styles.typeNowContainer}>
         <div className="popup" id="popup">
           {popupImages.map((image, index) => (
-            <img
-              key={index}
-              src={image.src}
-              style={image.style}
-              className={styles.popupImage}
-              alt=""
-              onClick={() => handleImageClick(index)}
-            />
+            <Popup
+              left={image.left}
+              top={image.top}
+              images={image.images}
+            ></Popup>
           ))}
         </div>
       </div>
