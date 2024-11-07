@@ -155,7 +155,7 @@ function WriteNow() {
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 훅
 
   const handleOutcomeEnd = () => {
-    navigate(0);
+    navigate("/readNow");
   };
 
   return (
