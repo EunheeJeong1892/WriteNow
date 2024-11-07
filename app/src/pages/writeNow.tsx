@@ -81,10 +81,14 @@ function WriteNow() {
         if (wordPositions.length > 0) {
           wordPositions.forEach((position) => {
             if (position !== undefined) {
+              const currentImage =
+                popupImages.find((popup) => popup.images.includes(item.link))
+                  ?.images[0] || item.link;
+
               newUnderlinedWordsData.push({
                 word: item.word,
-                position, // 단어가 시작하는 위치 (HTML을 제외한 실제 텍스트에서의 위치)
-                imageSrc: `https://daqsct7lk85c0.cloudfront.net/public/words/${item.link}`, // 이미지 링크
+                position,
+                imageSrc: `https://daqsct7lk85c0.cloudfront.net/public/words/${currentImage}`, // 현재 활성화된 이미지 링크만 추가
               });
             }
           });
@@ -116,15 +120,26 @@ function WriteNow() {
   };
 
   const showPopupImage = (word: string, finded: WordProps[]) => {
-    const randomWidth = Math.floor(Math.random() * (500 - 60 + 1)) + 60;
+    const randomWidth = Math.floor(Math.random() * (600 - 120 + 1)) + 120;
 
     setPopupImages((prev) => {
       const newImages: PopupImageProps = {
         images: finded.map((o) => o.link),
         width: randomWidth,
+        currentIndex: 0,
+        onImageChange: () => {},
       };
       return [...prev, newImages];
     });
+  };
+
+  const handleImageChange = (imageIndex: number, parentIndex: number) => {
+    const updatedImages = [...popupImages];
+    updatedImages[parentIndex] = {
+      ...updatedImages[parentIndex],
+      currentIndex: imageIndex,
+    };
+    setPopupImages(updatedImages); // Update the state with new image index
   };
 
   const setCaretToEnd = (el: HTMLElement) => {
@@ -168,7 +183,14 @@ function WriteNow() {
       <div className={styles.typeNowContainer}>
         <div className={styles.popupContainer} id="popup">
           {popupImages.map((image, index) => (
-            <Popup width={image.width} images={image.images}></Popup>
+            <Popup
+              width={image.width}
+              images={image.images}
+              currentIndex={image.currentIndex || 0} // Pass currentIndex to Popup
+              onImageChange={(imageIndex) =>
+                handleImageChange(imageIndex, index)
+              }
+            ></Popup>
           ))}
         </div>
       </div>

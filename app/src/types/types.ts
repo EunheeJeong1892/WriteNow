@@ -42,4 +42,6 @@ export interface UnderlinedWord {
 export interface PopupImageProps {
   width: number;
   images: string[];
+  currentIndex: number;
+  onImageChange: (imageIndex: number) => void;
 }

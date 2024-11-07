@@ -2,17 +2,19 @@ import React, { useState } from "react";
 import { PopupImageProps } from "../../types/types";
 import styles from "../../css/common.module.css";
 
-const Popup: React.FC<PopupImageProps> = ({ width, images }) => {
+const Popup: React.FC<PopupImageProps> = ({ width, images, onImageChange }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex: number) => (prevIndex + 1) % images.length);
+    const newIndex = (currentIndex + 1) % images.length;
+    setCurrentIndex(newIndex);
+    onImageChange(newIndex);
   };
 
   const handlePrevious = () => {
-    setCurrentIndex(
-      (prevIndex: number) => (prevIndex - 1 + images.length) % images.length
-    );
+    const newIndex = (currentIndex - 1 + images.length) % images.length;
+    setCurrentIndex(newIndex);
+    onImageChange(newIndex);
   };
 
   return (
