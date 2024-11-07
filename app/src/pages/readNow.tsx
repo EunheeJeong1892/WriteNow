@@ -3,16 +3,14 @@ import Header from "../components/header";
 import { WordsWithImagesProps } from "../types/types";
 import { Helmet } from "react-helmet-async";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { answersAtom } from "../atoms";
+import { answersAtom, progressBarVisibleAtom } from "../atoms";
 import Outcome from "../components/outcome";
-import AnswerList from "../components/readNow/answerList";
 import AnswerCard from "../components/readNow/answerCard";
 import { fetchAnswers } from "../api/answerAPI";
 import { QUESTIONS } from "../constants/constants";
 import readNowStyles from "../css/readNow.module.css";
 
 function ReadNow() {
-  const [selectedCardId, setSelectedCardId] = useState<number | null>(null); // 추가된 상태
   const cards = useRecoilValue(answersAtom);
   const [showOutcome, setShowOutcome] = useState<boolean>(false); // Outcome 표시 상태
   const [outcomeData, setOutcomeData] = useState<{
@@ -20,10 +18,35 @@ function ReadNow() {
     wordsWithImages: WordsWithImagesProps[];
   } | null>(null); // 추가
   const setAnswerList = useSetRecoilState(answersAtom);
+  const setProgressBarVisible = useSetRecoilState(progressBarVisibleAtom);
+
+  const handleGoToRandomCard = (word: string) => {
+    const filteredCards = cards
+      .map((card, index) => ({ ...card, index })) // 각 카드에 인덱스를 포함
+      .filter((card) => card.message.includes(word));
+
+    // 필터링된 카드가 없을 경우 종료
+    if (filteredCards.length === 0) {
+      console.log(`No card found with the word: ${word}`);
+      return;
+    }
+
+    // 필터링된 카드 중 랜덤 인덱스 선택
+    const randomIndex = Math.floor(Math.random() * filteredCards.length);
+    const selectedCard = filteredCards[randomIndex];
+
+    // 선택된 카드의 인덱스에서 handleCardClick 호출
+    handleCardClick(selectedCard.index);
+  };
 
   // 카드 클릭 핸들러
   const handleCardClick = (id: number) => {
-    setSelectedCardId(id); // 클릭된 카드의 ID를 상태로 설정
+    setProgressBarVisible(true);
+
+    setTimeout(() => {
+      setProgressBarVisible(false);
+      setCurrentPostIndex(id);
+    }, 1000);
   };
 
   useEffect(() => {
@@ -54,8 +77,6 @@ function ReadNow() {
   const handlePostClick = (index: number) => {
     setCurrentPostIndex(index);
   };
-  const previousPost =
-    currentPostIndex > 0 ? cards[currentPostIndex - 1] : null;
 
   const getQuestionText = () => {
     return (
@@ -78,7 +99,7 @@ function ReadNow() {
         <title>Read Now</title>
       </Helmet>
       <div>
-        {previousPost && (
+        {currentPostIndex > 0 && (
           <div
             className={readNowStyles.prev}
             onClick={() => {
@@ -109,33 +130,36 @@ function ReadNow() {
             registDate={cards[currentPostIndex].registDate}
             wordsWithImages={cards[currentPostIndex].wordsWithImages}
             onPlayBtnClick={handlePlayBtnClick}
+            onWordClick={handleGoToRandomCard}
             onClick={() => {
               return true;
             }}
           ></AnswerCard>
         )}
-        <div
-          className={readNowStyles.next}
-          onClick={() => {
-            handlePostClick(currentPostIndex + 1);
-          }}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="9"
-            height="9"
-            viewBox="0 0 9 9"
-            fill="none"
+        {currentPostIndex < cards.length && (
+          <div
+            className={readNowStyles.next}
+            onClick={() => {
+              handlePostClick(currentPostIndex + 1);
+            }}
           >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M3.94103 8.17114L0.0860777 1.4099C-0.0286932 1.21972 -0.0286932 0.985414 0.0860777 0.795238C0.205693 0.607103 0.421371 0.494558 0.65147 0.500202L8.36138 0.500203C8.58822 0.500241 8.79823 0.614714 8.91392 0.801385C9.02869 0.991561 9.02869 1.22587 8.91392 1.41604L5.05897 8.17729C4.94681 8.37608 4.72971 8.5 4.49357 8.5C4.25744 8.5 4.04034 8.37608 3.92818 8.17729L3.94103 8.17114Z"
-              fill="black"
-            />
-          </svg>
-          next
-        </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="9"
+              height="9"
+              viewBox="0 0 9 9"
+              fill="none"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M3.94103 8.17114L0.0860777 1.4099C-0.0286932 1.21972 -0.0286932 0.985414 0.0860777 0.795238C0.205693 0.607103 0.421371 0.494558 0.65147 0.500202L8.36138 0.500203C8.58822 0.500241 8.79823 0.614714 8.91392 0.801385C9.02869 0.991561 9.02869 1.22587 8.91392 1.41604L5.05897 8.17729C4.94681 8.37608 4.72971 8.5 4.49357 8.5C4.25744 8.5 4.04034 8.37608 3.92818 8.17729L3.94103 8.17114Z"
+                fill="black"
+              />
+            </svg>
+            next
+          </div>
+        )}
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { PopupImageProps } from "../../types/types";
 import styles from "../../css/common.module.css";
 
-const Popup: React.FC<PopupImageProps> = ({ left, top, images }) => {
+const Popup: React.FC<PopupImageProps> = ({ width, images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleNext = () => {
@@ -16,10 +16,7 @@ const Popup: React.FC<PopupImageProps> = ({ left, top, images }) => {
   };
 
   return (
-    <div
-      className={styles.popupContainer}
-      style={{ position: "absolute", left, top }}
-    >
+    <div className={styles.popup} style={{ width }}>
       <img
         src={`https://daqsct7lk85c0.cloudfront.net/public/words/${images[currentIndex]}`}
         alt={`Popup Image ${currentIndex + 1}`}

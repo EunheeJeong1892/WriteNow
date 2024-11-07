@@ -5,21 +5,15 @@ import { Helmet } from "react-helmet-async";
 import Outcome from "../components/outcome";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { progressBarVisibleAtom, wordsAtom } from "../atoms";
-import { UnderlinedWord, WordProps } from "../types/types";
+import { PopupImageProps, UnderlinedWord, WordProps } from "../types/types";
 import { useNavigate } from "react-router-dom";
 import { postAnswer } from "../api/answerAPI";
 import Popup from "../components/writeNow/popup";
 
-interface PopupImage {
-  images: string[];
-  left: number;
-  top: number;
-}
-
 function WriteNow() {
   const inputRef = useRef<HTMLDivElement>(null);
   const displayMenuRef = useRef<HTMLDivElement>(null);
-  const [popupImages, setPopupImages] = useState<PopupImage[]>([]);
+  const [popupImages, setPopupImages] = useState<PopupImageProps[]>([]);
   const [displayedWords, setDisplayedWords] = useState<Set<string>>(new Set());
   const [showOutcome, setShowOutcome] = useState<boolean>(false); // Outcome 표시 상태
   const wordList = useRecoilValue(wordsAtom);
@@ -122,20 +116,12 @@ function WriteNow() {
   };
 
   const showPopupImage = (word: string, finded: WordProps[]) => {
-    const randomX = Math.max(0, Math.random() * (window.innerWidth - 500));
-    const randomY = Math.max(
-      0,
-      Math.random() * (window.innerHeight - 200) - 170
-    );
+    const randomWidth = Math.floor(Math.random() * (500 - 60 + 1)) + 60;
 
     setPopupImages((prev) => {
-      const baseLeft = randomX;
-      const baseTop = randomY;
-
-      const newImages: PopupImage = {
+      const newImages: PopupImageProps = {
         images: finded.map((o) => o.link),
-        left: baseLeft,
-        top: baseTop,
+        width: randomWidth,
       };
       return [...prev, newImages];
     });
@@ -180,13 +166,9 @@ function WriteNow() {
         displayMenuRef={displayMenuRef}
       ></Header>
       <div className={styles.typeNowContainer}>
-        <div className="popup" id="popup">
+        <div className={styles.popupContainer} id="popup">
           {popupImages.map((image, index) => (
-            <Popup
-              left={image.left}
-              top={image.top}
-              images={image.images}
-            ></Popup>
+            <Popup width={image.width} images={image.images}></Popup>
           ))}
         </div>
       </div>
