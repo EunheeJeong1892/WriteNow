@@ -13,12 +13,11 @@ export interface AnswerCardProps {
 }
 
 export interface ReadCardWithWordClickProps extends AnswerCardProps {
-  //onWordClick: (event: React.MouseEvent, word: string) => void; // 단어 클릭 핸들러
-  //selectedWord: string | null; // 선택된 단어
   onPlayBtnClick: (
     message: string,
     wordsWithImages: WordsWithImagesProps[]
   ) => void; // 추가
+  onWordClick: (word: string) => void;
 }
 
 export interface AnswerListProps {
@@ -41,7 +40,8 @@ export interface UnderlinedWord {
 }
 
 export interface PopupImageProps {
-  left: number;
-  top: number;
+  width: number;
   images: string[];
+  currentIndex: number;
+  onImageChange: (imageIndex: number) => void;
 }

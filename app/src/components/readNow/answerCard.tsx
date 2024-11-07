@@ -11,6 +11,7 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
   onClick,
   wordsWithImages,
   onPlayBtnClick,
+  onWordClick,
 }) => {
   const questionMessage =
     QUESTIONS.find((q) => q.id === questionId)?.message || "No message found";
@@ -32,7 +33,10 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
       // 언더라인 처리된 단어 추가
       result.push(
         <span key={`word-${index}`} className={styles.wordWithImage}>
-          <span className={readNowStyle.readCardUnderline}>
+          <span
+            onClick={() => onWordClick(word)}
+            className={readNowStyle.readCardUnderline}
+          >
             {word}
             {/* 툴팁을 마우스 오버 시 표시 */}
             <div className={readNowStyle.readCardImageTooltip}>
@@ -80,8 +84,8 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
             onClick={handlePlayBtn}
             className={`${readNowStyle.playButton}`}
             xmlns="http://www.w3.org/2000/svg"
-            width="62"
-            height="62"
+            width="39"
+            height="39"
             viewBox="0 0 62 62"
             fill="none"
           >

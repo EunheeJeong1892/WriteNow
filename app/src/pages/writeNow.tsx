@@ -5,21 +5,15 @@ import { Helmet } from "react-helmet-async";
 import Outcome from "../components/outcome";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { progressBarVisibleAtom, wordsAtom } from "../atoms";
-import { UnderlinedWord, WordProps } from "../types/types";
+import { PopupImageProps, UnderlinedWord, WordProps } from "../types/types";
 import { useNavigate } from "react-router-dom";
 import { postAnswer } from "../api/answerAPI";
 import Popup from "../components/writeNow/popup";
 
-interface PopupImage {
-  images: string[];
-  left: number;
-  top: number;
-}
-
 function WriteNow() {
   const inputRef = useRef<HTMLDivElement>(null);
   const displayMenuRef = useRef<HTMLDivElement>(null);
-  const [popupImages, setPopupImages] = useState<PopupImage[]>([]);
+  const [popupImages, setPopupImages] = useState<PopupImageProps[]>([]);
   const [displayedWords, setDisplayedWords] = useState<Set<string>>(new Set());
   const [showOutcome, setShowOutcome] = useState<boolean>(false); // Outcome 표시 상태
   const wordList = useRecoilValue(wordsAtom);
@@ -87,10 +81,14 @@ function WriteNow() {
         if (wordPositions.length > 0) {
           wordPositions.forEach((position) => {
             if (position !== undefined) {
+              const currentImage =
+                popupImages.find((popup) => popup.images.includes(item.link))
+                  ?.images[0] || item.link;
+
               newUnderlinedWordsData.push({
                 word: item.word,
-                position, // 단어가 시작하는 위치 (HTML을 제외한 실제 텍스트에서의 위치)
-                imageSrc: `https://daqsct7lk85c0.cloudfront.net/public/words/${item.link}`, // 이미지 링크
+                position,
+                imageSrc: `https://daqsct7lk85c0.cloudfront.net/public/words/${currentImage}`, // 현재 활성화된 이미지 링크만 추가
               });
             }
           });
@@ -122,23 +120,26 @@ function WriteNow() {
   };
 
   const showPopupImage = (word: string, finded: WordProps[]) => {
-    const randomX = Math.max(0, Math.random() * (window.innerWidth - 500));
-    const randomY = Math.max(
-      0,
-      Math.random() * (window.innerHeight - 200) - 170
-    );
+    const randomWidth = Math.floor(Math.random() * (600 - 120 + 1)) + 120;
 
     setPopupImages((prev) => {
-      const baseLeft = randomX;
-      const baseTop = randomY;
-
-      const newImages: PopupImage = {
+      const newImages: PopupImageProps = {
         images: finded.map((o) => o.link),
-        left: baseLeft,
-        top: baseTop,
+        width: randomWidth,
+        currentIndex: 0,
+        onImageChange: () => {},
       };
       return [...prev, newImages];
     });
+  };
+
+  const handleImageChange = (imageIndex: number, parentIndex: number) => {
+    const updatedImages = [...popupImages];
+    updatedImages[parentIndex] = {
+      ...updatedImages[parentIndex],
+      currentIndex: imageIndex,
+    };
+    setPopupImages(updatedImages); // Update the state with new image index
   };
 
   const setCaretToEnd = (el: HTMLElement) => {
@@ -155,7 +156,7 @@ function WriteNow() {
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 훅
 
   const handleOutcomeEnd = () => {
-    navigate(0);
+    navigate("/readNow");
   };
 
   return (
@@ -180,12 +181,15 @@ function WriteNow() {
         displayMenuRef={displayMenuRef}
       ></Header>
       <div className={styles.typeNowContainer}>
-        <div className="popup" id="popup">
+        <div className={styles.popupContainer} id="popup">
           {popupImages.map((image, index) => (
             <Popup
-              left={image.left}
-              top={image.top}
+              width={image.width}
               images={image.images}
+              currentIndex={image.currentIndex || 0} // Pass currentIndex to Popup
+              onImageChange={(imageIndex) =>
+                handleImageChange(imageIndex, index)
+              }
             ></Popup>
           ))}
         </div>

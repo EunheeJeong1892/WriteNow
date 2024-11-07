@@ -38,17 +38,16 @@
   display: flex;
   padding-bottom: 20px;
   justify-content: space-between;
-  align-items: flex-start;
   align-self: stretch;
   border-bottom: 1px solid #bcbcbc;
   margin-top: 20px;
+  align-items: center;
 }
 
 .answerCardQuestionBoxInner {
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
-  gap: 6px;
+  gap: 15px;
 }
 
 .answerCardQuestion {
@@ -67,7 +66,7 @@
   line-height: 80px; /* 133.333% */
   letter-spacing: -1.8px;
   width: 100%;
-  min-height: 500px;
+  min-height: 400px;
 }
 
 .playButton .circle {
@@ -93,7 +92,7 @@
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 10;
   left: 40px;
-  bottom: -60px;
+  bottom: -73px;
   display: none;
   width: 100%;
   height: 100%;
@@ -103,4 +102,16 @@
 }
 .readCardUnderline:hover .readCardImageTooltip {
   display: block; /* hover 시에만 보임 */
+}
+
+.prev,
+.next {
+  border-bottom: 1px solid #000;
+  background: #fafafa;
+  display: flex;
+  padding: 12px 0px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
 }
