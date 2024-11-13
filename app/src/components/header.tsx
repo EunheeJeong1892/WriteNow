@@ -34,7 +34,7 @@ const Header: React.FC<HeaderProps> = ({
     if (currentMenu === "writeNow") {
       setPlaceholder(placeholders[placeholderNum]);
     } else if (currentMenu === "library") {
-      setPlaceholder("검색어를 입력하세요.");
+      setPlaceholder("단어를 입력하세요.");
     }
   }, [placeholderNum]);
 
