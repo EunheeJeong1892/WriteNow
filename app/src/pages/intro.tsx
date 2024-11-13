@@ -41,7 +41,7 @@ function Intro() {
       >
         <video
           ref={videoRef}
-          src="https://daqsct7lk85c0.cloudfront.net/public/main03.mp4" // 동영상 파일 URL
+          src="https://daqsct7lk85c0.cloudfront.net/public/main04.mp4" // 동영상 파일 URL
           style={{ height: "100%", width: "100%", objectFit: "cover" }}
           playsInline
           controls

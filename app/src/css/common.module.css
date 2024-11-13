@@ -133,6 +133,7 @@
   width: 100%;
   justify-content: center;
   margin-bottom: 80px;
+  margin-top: 10px;
   cursor: pointer;
 }
 .floatAddBtn {

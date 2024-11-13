@@ -89,7 +89,7 @@ const Outcome: React.FC<OutcomeProps> = ({
       .replace(
         /./g,
         (char) =>
-          `<span style="color: #FFFFFF;text-decoration: underline;text-decoration-color:#FFFFFF;text-underline-position: under;">${char}</span>`
+          `<span style="color: #FFFFFF;text-decoration: underline;text-decoration-color:#FFFFFF;text-underline-position: under;text-decoration-thickness: 2px;">${char}</span>`
       );
     const remainingText = message.slice(position); // 나머지 텍스트
 
