@@ -67,6 +67,7 @@
   letter-spacing: -1.8px;
   width: 100%;
   min-height: 500px;
+  word-break: keep-all;
 }
 
 .playButton .circle {
@@ -122,7 +123,7 @@
 .printBody {
   display: flex;
   width: 363px;
-  padding: 60px 20px;
+  padding: 60px 0px;
   flex-direction: column;
   align-items: center;
   gap: 26px;
