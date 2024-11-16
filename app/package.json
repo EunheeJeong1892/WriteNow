@@ -49,6 +49,7 @@
     ]
   },
   "devDependencies": {
+    "@types/dom-serial": "^1.0.6",
     "@types/react-responsive-masonry": "^2.1.3",
     "@types/react-slick": "^0.23.13"
   }

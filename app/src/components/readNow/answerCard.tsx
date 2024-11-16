@@ -74,8 +74,29 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
     }
   };
 
-  const handlePrintBtn = () => {
-    handlePrint();
+  const handlePrintBtn = async () => {
+    try {
+      // 1. HTML 콘텐츠 가져오기
+      const plainText = contentRef.current?.innerHTML;
+
+      // 2. 직렬 포트 요청
+      const port = await navigator.serial.requestPort();
+      await port.open({ baudRate: 9600 });
+
+      // 3. 텍스트 전송
+      const writer = port.writable.getWriter();
+      const encoder = new TextEncoder();
+      await writer.write(encoder.encode(plainText + "\n\n")); // 변환된 텍스트 전송
+      await writer.write(new Uint8Array([0x1b, 0x64, 0x02])); // 자르기 명령
+      writer.releaseLock();
+
+      // 4. 직렬 포트 닫기
+      await port.close();
+      alert("Print job completed!");
+    } catch (error) {
+      console.error("Failed to print:", error);
+      alert("Failed to print. Check the console for details.");
+    }
   };
 
   return (
@@ -151,6 +172,7 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
             viewBox="0 0 28 27"
             fill="none"
             onClick={handlePrintBtn}
+            className={readNowStyle.printBtn}
           >
             <path
               fillRule="evenodd"
