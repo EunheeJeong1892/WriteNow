@@ -122,14 +122,13 @@
 .printBody {
   display: flex;
   width: 363px;
-  padding: 60px 40px;
+  padding: 60px 20px;
   flex-direction: column;
   align-items: center;
   gap: 26px;
   font-size: 12px;
   line-height: 18px;
   text-align: center;
-  margin: 10px;
 }
 
 .printMessage {
