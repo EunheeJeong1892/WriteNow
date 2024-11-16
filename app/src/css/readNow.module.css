@@ -67,6 +67,7 @@
   letter-spacing: -1.8px;
   width: 100%;
   min-height: 500px;
+  word-break: keep-all;
 }
 
 .playButton .circle {
