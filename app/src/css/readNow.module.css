@@ -37,7 +37,7 @@
 .answerCardQuestionBox {
   display: flex;
   padding-bottom: 20px;
-  justify-content: space-between;
+  gap: 30px;
   align-self: stretch;
   border-bottom: 1px solid #bcbcbc;
   margin-top: 20px;
@@ -114,4 +114,26 @@
   align-items: center;
   gap: 10px;
   cursor: pointer;
+}
+
+.print {
+  display: none;
+}
+.printBody {
+  display: flex;
+  width: 363px;
+  padding: 60px 40px;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.printMessage {
+  color: #000;
+  text-align: center;
+  font-family: Inter;
+  font-size: 28px;
+  line-height: 42px;
 }

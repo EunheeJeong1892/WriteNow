@@ -3,6 +3,8 @@ import styles from "../../css/common.module.css";
 import { ReadCardWithWordClickProps } from "../../types/types";
 import { QUESTIONS } from "../../constants/constants";
 import readNowStyle from "../../css/readNow.module.css";
+import dayjs from "dayjs";
+import { useReactToPrint } from "react-to-print";
 
 const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
   questionId,
@@ -15,6 +17,10 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
 }) => {
   const questionMessage =
     QUESTIONS.find((q) => q.id === questionId)?.message || "No message found";
+  const formattedDate = dayjs().format("YYYY-MM-DD");
+  const contentRef = useRef<HTMLDivElement>(null);
+  const handlePrint = useReactToPrint({ contentRef });
+
   const renderMessageWithImages = () => {
     if (!wordsWithImages) return message;
 
@@ -66,6 +72,10 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
     } else {
       onPlayBtnClick(message, []);
     }
+  };
+
+  const handlePrintBtn = () => {
+    handlePrint();
   };
 
   return (
@@ -134,9 +144,37 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
               </filter>
             </defs>
           </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="28"
+            height="27"
+            viewBox="0 0 28 27"
+            fill="none"
+            onClick={handlePrintBtn}
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M26 6.5H23V0.5H5V6.5H2C0.89543 6.5 0 7.39543 0 8.5V18.5C0 19.6046 0.89543 20.5 2 20.5H5V26.5H23V20.5H26C27.1046 20.5 28 19.6046 28 18.5V8.5C28 7.39543 27.1046 6.5 26 6.5ZM7 2.5H21V6.5H7V2.5ZM21 24.5H7V14.5H21V24.5ZM26 18.5H23V12.5H5V18.5H2V8.5H26V18.5Z"
+              fill="#C2C2C2"
+            />
+          </svg>
         </div>
         <div className={readNowStyle.answerCardMessageBox}>
           {renderMessageWithImages()}
+        </div>
+      </div>
+      <div className={readNowStyle.print}>
+        <div ref={contentRef} className={readNowStyle.printBody}>
+          <div>{questionMessage}</div>
+          <div>*</div>
+          <div className={readNowStyle.printMessage}>{message}</div>
+          <div>*</div>
+          <div>
+            {formattedDate}
+            <br />
+            writenow.work
+          </div>
         </div>
       </div>
     </>
