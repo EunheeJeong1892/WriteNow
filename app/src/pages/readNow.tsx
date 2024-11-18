@@ -134,7 +134,7 @@ function ReadNow() {
             }}
           ></AnswerCard>
         )}
-        {currentPostIndex < cards.length && (
+        {currentPostIndex < cards.length - 1 && (
           <div
             className={readNowStyles.next}
             onClick={() => {
