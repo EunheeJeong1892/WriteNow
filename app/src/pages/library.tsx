@@ -41,7 +41,7 @@ function Library() {
   const handleInput = () => {
     const formatText = inputRef?.current?.innerText || "";
     setInputText(formatText);
-    if (formatText != "") {
+    if (formatText !== "") {
       const filtered = words.filter((word) =>
         word.word.includes(formatText.trim())
       );

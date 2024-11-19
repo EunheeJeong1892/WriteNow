@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef, useState } from "react";
+import React from "react";
 import styles from "../css/common.module.css";
 
 interface ModalProps {

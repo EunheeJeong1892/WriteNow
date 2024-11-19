@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ActionsOperations } from "./ActionOperations";
 import headerStyle from "../css/header.module.css";
 import { useNavigate } from "react-router-dom";
@@ -180,6 +180,7 @@ const Header: React.FC<HeaderProps> = ({
               onClick={clearInput}
               className={headerStyle.send}
               src="ic_remove.svg"
+              alt="remove"
             />
           )}
         </>

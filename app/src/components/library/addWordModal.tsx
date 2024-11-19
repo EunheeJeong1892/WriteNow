@@ -1,6 +1,6 @@
-import React, { ReactNode, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import styles from "../../css/common.module.css";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { progressBarVisibleAtom, wordsAtom } from "../../atoms";
 import { WordProps } from "../../types/types";
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import styles from "../../css/common.module.css";
 import { ReadCardWithWordClickProps } from "../../types/types";
 import { QUESTIONS } from "../../constants/Constants";
@@ -46,7 +46,7 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
             {word}
             {/* 툴팁을 마우스 오버 시 표시 */}
             <div className={readNowStyle.readCardImageTooltip}>
-              <img src={imageSrc} alt="Image Tooltip" />
+              <img src={imageSrc} alt={`${index}`} />
             </div>
           </span>
         </span>

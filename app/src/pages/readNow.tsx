@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import { WordsWithImagesProps } from "../types/types";
 import { Helmet } from "react-helmet-async";
