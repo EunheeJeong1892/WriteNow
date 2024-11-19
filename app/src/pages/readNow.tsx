@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import Header from "../components/header";
+import Header from "../components/Header";
 import { WordsWithImagesProps } from "../types/types";
 import { Helmet } from "react-helmet-async";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { answersAtom, progressBarVisibleAtom } from "../atoms";
-import Outcome from "../components/outcome";
-import AnswerCard from "../components/readNow/answerCard";
+import Outcome from "../components/Outcome";
+import AnswerCard from "../components/ReadNow/AnswerCard";
 import { fetchAnswers } from "../api/answerAPI";
-import { QUESTIONS } from "../constants/constants";
+import { QUESTIONS } from "../constants/Constants";
 import readNowStyles from "../css/readNow.module.css";
 
 function ReadNow() {

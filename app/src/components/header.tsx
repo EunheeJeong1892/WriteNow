@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ActionsOperations } from "./actionOperations";
+import { ActionsOperations } from "./ActionOperations";
 import headerStyle from "../css/header.module.css";
 import { useNavigate } from "react-router-dom";
-import { QUESTIONS } from "../constants/constants";
+import { QUESTIONS } from "../constants/Constants";
 
 interface HeaderProps {
   showInput: boolean;

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "../../css/common.module.css";
 import { ReadCardWithWordClickProps } from "../../types/types";
-import { QUESTIONS } from "../../constants/constants";
+import { QUESTIONS } from "../../constants/Constants";
 import readNowStyle from "../../css/readNow.module.css";
 import dayjs from "dayjs";
 import { useReactToPrint } from "react-to-print";

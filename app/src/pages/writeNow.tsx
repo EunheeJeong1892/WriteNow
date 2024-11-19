@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import Header from "../components/header";
+import Header from "../components/Header";
 import styles from "../css/common.module.css";
 import { Helmet } from "react-helmet-async";
-import Outcome from "../components/outcome";
+import Outcome from "../components/Outcome";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { progressBarVisibleAtom, wordsAtom } from "../atoms";
 import { PopupImageProps, UnderlinedWord, WordProps } from "../types/types";
 import { useNavigate } from "react-router-dom";
 import { postAnswer } from "../api/answerAPI";
-import Popup from "../components/writeNow/popup";
+import Popup from "../components/WriteNow/Popup";
 
 function WriteNow() {
   const inputRef = useRef<HTMLDivElement>(null);

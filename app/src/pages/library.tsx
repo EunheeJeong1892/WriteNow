@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "../css/common.module.css";
-import Header from "../components/header";
+import Header from "../components/Header";
 import { Helmet } from "react-helmet-async";
 import { WordProps } from "../types/types";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { wordsAtom } from "../atoms";
-import AddWordModal from "../components/library/addWordModal";
-import { default as Frame } from "../components/library/libraryFrame";
+import AddWordModal from "../components/Library/AddWordModal";
+import { default as Frame } from "../components/Library/LibraryFrame";
 import libraryStyles from "../css/library.module.css";
 import { fetchWords } from "../api/libraryAPI";
-import AddWordFrame from "../components/library/addWordFrame";
+import AddWordFrame from "../components/Library/AddWordFrame";
 
 function Library() {
   const [inputText, setInputText] = useState<string>(""); // 상태로 텍스트 관리
