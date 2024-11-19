@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
-import { ActionsOperations } from "./actionOperations";
+import React, { useEffect, useState } from "react";
+import { ActionsOperations } from "./ActionOperations";
 import headerStyle from "../css/header.module.css";
 import { useNavigate } from "react-router-dom";
-import { QUESTIONS } from "../constants/constants";
+import { QUESTIONS } from "../constants/Constants";
+import HowToUseModal from "./HowToUseModal";
 
 interface HeaderProps {
   showInput: boolean;
@@ -27,6 +28,7 @@ const Header: React.FC<HeaderProps> = ({
   const [placeholderNum, setPlaceholderNum] = useState<number>(0);
   const [inputText, setInputText] = useState<string>(""); // 상태로 텍스트 관리
   const [isComposing, setIsComposing] = useState(false); // 한글 조합 상태
+  const [isHowToUseOpen, setIsHowToUseOpen] = useState(false);
 
   const menus = ["writeNow", "readNow", "library"];
 
@@ -98,6 +100,8 @@ const Header: React.FC<HeaderProps> = ({
     }
   };
 
+  const openHowToUse = () => setIsHowToUseOpen(true);
+  const closeHowToUse = () => setIsHowToUseOpen(false);
   return (
     <div className={headerStyle.header}>
       <header className={headerStyle.class}>
@@ -128,7 +132,9 @@ const Header: React.FC<HeaderProps> = ({
               ))}
           </div>
           <div className={headerStyle["div-wrapper"]}>
-            <div className={headerStyle.div}>how to use</div>
+            <div className={headerStyle.div} onClick={openHowToUse}>
+              how to use
+            </div>
           </div>
         </div>
       </header>
@@ -174,10 +180,15 @@ const Header: React.FC<HeaderProps> = ({
               onClick={clearInput}
               className={headerStyle.send}
               src="ic_remove.svg"
+              alt="remove"
             />
           )}
         </>
       )}
+      <HowToUseModal
+        isOpen={isHowToUseOpen}
+        onClose={closeHowToUse}
+      ></HowToUseModal>
     </div>
   );
 };

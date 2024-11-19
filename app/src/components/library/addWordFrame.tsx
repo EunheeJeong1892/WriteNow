@@ -1,7 +1,7 @@
-import React, { ReactNode, useRef, useState } from "react";
+import React from "react";
 import libraryStyles from "../../css/library.module.css";
 
-const AddWordFrame: React.FC = ({}) => {
+const AddWordFrame: React.FC = () => {
   return (
     <div className={libraryStyles.frame}>
       <div className={libraryStyles.addWordFrame}>

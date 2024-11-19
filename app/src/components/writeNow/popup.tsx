@@ -21,7 +21,7 @@ const Popup: React.FC<PopupImageProps> = ({ width, images, onImageChange }) => {
     <div className={styles.popup} style={{ width }}>
       <img
         src={`https://daqsct7lk85c0.cloudfront.net/public/words/${images[currentIndex]}`}
-        alt={`Popup Image ${currentIndex + 1}`}
+        alt={`${currentIndex + 1}`}
         className={styles.popupImage}
       />
       {images.length > 1 && (

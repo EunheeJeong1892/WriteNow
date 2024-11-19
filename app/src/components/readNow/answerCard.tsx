@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import styles from "../../css/common.module.css";
 import { ReadCardWithWordClickProps } from "../../types/types";
-import { QUESTIONS } from "../../constants/constants";
+import { QUESTIONS } from "../../constants/Constants";
 import readNowStyle from "../../css/readNow.module.css";
 import dayjs from "dayjs";
 import { useReactToPrint } from "react-to-print";
@@ -46,7 +46,7 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
             {word}
             {/* 툴팁을 마우스 오버 시 표시 */}
             <div className={readNowStyle.readCardImageTooltip}>
-              <img src={imageSrc} alt="Image Tooltip" />
+              <img src={imageSrc} alt={`${index}`} />
             </div>
           </span>
         </span>
