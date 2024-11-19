@@ -67,7 +67,7 @@
   position: relative;
   cursor: pointer;
 }
-.menu div:hover {
+.div:hover {
   text-decoration: underline;
 }
 .header .div {
@@ -81,6 +81,7 @@
   position: relative;
   white-space: nowrap;
   width: fit-content;
+  cursor: pointer;
 }
 
 .header .text-wrapper-2 {
