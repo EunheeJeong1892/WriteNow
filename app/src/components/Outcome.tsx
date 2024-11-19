@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "../css/common.module.css";
-import { useNavigate } from "react-router-dom";
-import { UnderlinedWord, WordProps } from "../types/types";
+import { UnderlinedWord } from "../types/types";
 import headerStyle from "../css/header.module.css";
 
 interface OutcomeProps {
