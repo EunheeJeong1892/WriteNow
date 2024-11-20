@@ -12,18 +12,13 @@ const HowToUseModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div onClick={(e) => e.stopPropagation()} className={styles.introModal}>
-        <div>
-          <iframe
-            width="560"
-            height="315"
-            src="https://www.youtube.com/embed/r4BgjyPTzLk?si=l6Nq2ZviU1cS0JGu"
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerPolicy="strict-origin-when-cross-origin"
-            allowFullScreen
-          ></iframe>
-        </div>
+        <video
+          src="https://daqsct7lk85c0.cloudfront.net/public/howToUse.mp4" // 동영상 파일 URL
+          style={{ height: "100%", width: "100%", objectFit: "cover" }}
+          playsInline
+          controls
+          muted={true}
+        ></video>
       </div>
     </div>
   );
