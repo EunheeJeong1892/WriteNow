@@ -78,7 +78,7 @@ function Library() {
                 registDate={word.registDate}
               ></Frame>
             ))}
-          {(filteredWords.length === 0 || inputText) && (
+          {(filteredWords.length === 0 || inputText.trim() !== "") && (
             <div onClick={openModal}>
               <AddWordFrame></AddWordFrame>
             </div>
