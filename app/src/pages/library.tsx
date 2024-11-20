@@ -16,9 +16,10 @@ function Library() {
   const inputRef = useRef<HTMLInputElement>(null);
   const setWordsAtom = useSetRecoilState(wordsAtom);
   const words = useRecoilValue(wordsAtom);
+  const PAGE_SIZE = 25;
   const [filteredWords, setFilteredWords] = useState<WordProps[]>(words); // 필터된 이미지 상태
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [visibleCount, setVisibleCount] = useState<number>(28); // 현재 보이는 이미지 수
+  const [visibleCount, setVisibleCount] = useState<number>(PAGE_SIZE); // 현재 보이는 이미지 수
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -52,7 +53,7 @@ function Library() {
   };
 
   const loadMoreWords = () => {
-    setVisibleCount((prevCount) => prevCount + 28);
+    setVisibleCount((prevCount) => prevCount + PAGE_SIZE);
   };
 
   return (
@@ -77,7 +78,7 @@ function Library() {
                 registDate={word.registDate}
               ></Frame>
             ))}
-          {(filteredWords.length === 0 || filteredWords.length > 0) && (
+          {(filteredWords.length === 0 || inputText) && (
             <div onClick={openModal}>
               <AddWordFrame></AddWordFrame>
             </div>
