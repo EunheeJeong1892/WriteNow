@@ -1,5 +1,5 @@
-var localAddress = "//408f-220-71-63-67.ngrok-free.app/WebPrintSDK/";
-var connectionMode = "https:";
+var localAddress = "//127.0.0.1:18080/WebPrintSDK/";
+var connectionMode = "http:";
 var wsPrint = null;
 
 var WebSocketPrint = function (serverURL, strPrinterName, request, callback) {
