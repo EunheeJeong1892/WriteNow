@@ -11,6 +11,7 @@ import {
   checkPrinterStatus,
   cutPaper,
   getPosData,
+  setCharacterset,
 } from "../../printer/bxlpos";
 import { requestPrint } from "../../printer/bxlcommon";
 
@@ -119,6 +120,7 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
     try {
       setPosId(0);
       checkPrinterStatus();
+      setCharacterset(13);
       printText(
         `\n\n${questionMessage}\n*\n${message}\n*\n${formattedDate}\nwritenow.work`,
         0,
