@@ -119,7 +119,16 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
     try {
       setPosId(0);
       checkPrinterStatus();
-      printText("dd");
+      printText(
+        "\n\nMiraeAsset Venture Tower 685,\nSampyeong-dong, Bundang-gu,\nSeongnam-si, Gyeonggi-do,\n463-400, Korea\n\n\n",
+        0,
+        0,
+        false,
+        false,
+        false,
+        0,
+        1
+      );
       cutPaper(1);
       var strSubmit = getPosData();
       console.log(strSubmit);
