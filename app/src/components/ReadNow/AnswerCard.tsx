@@ -5,6 +5,14 @@ import { QUESTIONS } from "../../constants/Constants";
 import readNowStyle from "../../css/readNow.module.css";
 import dayjs from "dayjs";
 import { useReactToPrint } from "react-to-print";
+import {
+  setPosId,
+  printText,
+  checkPrinterStatus,
+  cutPaper,
+  getPosData,
+} from "../../printer/bxlpos";
+import { requestPrint } from "../../printer/bxlcommon";
 
 const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
   questionId,
@@ -103,6 +111,25 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
     }
   };
 
+  const viewResult = (result: string) => {
+    console.log(result);
+  };
+
+  const handlePrintBtn3 = async () => {
+    try {
+      setPosId(0);
+      checkPrinterStatus();
+      printText("dd");
+      cutPaper(1);
+      var strSubmit = getPosData();
+      console.log(strSubmit);
+      requestPrint("lll", strSubmit, viewResult);
+    } catch (error) {
+      console.error("Failed to print:", error);
+      alert("Failed to print. Check the console for details.");
+    }
+  };
+
   const handlePrintBtn = () => {
     handlePrint();
   };
@@ -195,7 +222,7 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
             height="27"
             viewBox="0 0 28 27"
             fill="none"
-            onClick={handlePrintBtn2}
+            onClick={handlePrintBtn3}
             className={readNowStyle.printBtn}
           >
             <path

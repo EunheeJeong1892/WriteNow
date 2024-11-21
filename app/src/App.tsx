@@ -12,6 +12,7 @@ import { answersAtom, progressBarVisibleAtom, wordsAtom } from "./atoms";
 import FullScreenProgressBar from "./components/FullScreenProgressBar";
 import { fetchAnswers } from "./api/answerAPI";
 import { fetchWords } from "./api/libraryAPI";
+import Project from "./pages/project";
 
 function App() {
   const setAnswerList = useSetRecoilState(answersAtom);
@@ -43,6 +44,7 @@ function App() {
           <Route path="/writeNow" element={<WriteNow />} />
           <Route path="/library" element={<Library />} />
           <Route path="/readNow" element={<ReadNow />} />
+          <Route path="/project" element={<Project />} />
         </Routes>
       </BrowserRouter>
     </HelmetProvider>

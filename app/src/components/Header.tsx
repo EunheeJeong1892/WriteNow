@@ -131,10 +131,18 @@ const Header: React.FC<HeaderProps> = ({
                 </div>
               ))}
           </div>
-          <div className={headerStyle["div-wrapper"]}>
+          <div className={headerStyle.menu}>
             <div className={headerStyle.div} onClick={openHowToUse}>
               how to use
             </div>
+            {currentMenu !== "project" && (
+              <div
+                className={headerStyle.div}
+                onClick={() => handleMenuClick("project")}
+              >
+                project
+              </div>
+            )}
           </div>
         </div>
       </header>

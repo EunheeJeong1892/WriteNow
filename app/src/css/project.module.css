@@ -1,0 +1,29 @@
+.container {
+  margin: 0 auto;
+  text-align: center;
+  font-family: Inter;
+  font-size: 30px;
+  display: flex;
+  gap: 51px;
+  flex-direction: column;
+}
+
+.upperDiv {
+  display: flex;
+  gap: 39px;
+  justify-content: center;
+  margin-top: 74px;
+}
+
+.selectBorderDiv {
+  cursor: pointer;
+}
+
+.creditBtn:hover {
+  color: #007aff;
+  text-decoration: underline;
+  text-underline-position: under;
+  text-decoration-color: #007aff;
+  text-decoration-thickness: 2px;
+  cursor: pointer;
+}
