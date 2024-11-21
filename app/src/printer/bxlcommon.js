@@ -1,5 +1,5 @@
 var localAddress = "//127.0.0.1:18080/WebPrintSDK/";
-var connectionMode = "wss";
+var connectionMode = "wss:";
 var wsPrint = null;
 
 var WebSocketPrint = function (serverURL, strPrinterName, request, callback) {
