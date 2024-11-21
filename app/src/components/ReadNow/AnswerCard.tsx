@@ -123,7 +123,8 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
       cutPaper(1);
       var strSubmit = getPosData();
       console.log(strSubmit);
-      requestPrint("lll", strSubmit, viewResult);
+      requestPrint("print", strSubmit, viewResult);
+      return true;
     } catch (error) {
       console.error("Failed to print:", error);
       alert("Failed to print. Check the console for details.");
