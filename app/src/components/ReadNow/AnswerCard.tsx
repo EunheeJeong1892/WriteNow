@@ -121,8 +121,10 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
       setPosId(0);
       checkPrinterStatus();
       setCharacterset(949);
+      printText(`\n\n${questionMessage}\n*\n`, 0, 0, false, false, false, 0, 1);
+      printText(`${message}`, 2, 2, false, false, false, 0, 1);
       printText(
-        `\n\n${questionMessage}\n*\n${message}\n*\n${formattedDate}\nwritenow.work`,
+        `\n*\n${formattedDate}\nwritenow.work\n\n\n`,
         0,
         0,
         false,
