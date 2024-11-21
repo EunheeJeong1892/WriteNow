@@ -83,40 +83,11 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
     }
   };
 
-  const handlePrintBtn2 = async () => {
-    try {
-      // 1. HTML 콘텐츠 가져오기
-      const plainText = contentRef.current?.innerHTML;
-
-      // 2. 직렬 포트 요청
-      const port = await navigator.serial.requestPort();
-      await port.open({ baudRate: 9600 });
-
-      // 3. 텍스트 전송
-      const writer = port.writable.getWriter();
-      if (writer !== null) {
-        const encoder = new TextEncoder();
-        await writer.write(encoder.encode(plainText + "\n\n"));
-        await writer.write(new Uint8Array([0x1b, 0x64, 0x02]));
-        writer.releaseLock();
-      }
-
-      await port.close();
-
-      // 4. 직렬 포트 닫기
-      await port.close();
-      alert("Print job completed!");
-    } catch (error) {
-      console.error("Failed to print:", error);
-      alert("Failed to print. Check the console for details.");
-    }
-  };
-
   const viewResult = (result: string) => {
     console.log(result);
   };
 
-  const handlePrintBtn3 = async () => {
+  const handlePrintBtn = async () => {
     try {
       setPosId(0);
       checkPrinterStatus();
@@ -142,10 +113,6 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
       console.error("Failed to print:", error);
       alert("Failed to print. Check the console for details.");
     }
-  };
-
-  const handlePrintBtn = () => {
-    handlePrint();
   };
 
   return (
@@ -228,22 +195,6 @@ const AnswerCard: React.FC<ReadCardWithWordClickProps> = ({
               clipRule="evenodd"
               d="M26 6.5H23V0.5H5V6.5H2C0.89543 6.5 0 7.39543 0 8.5V18.5C0 19.6046 0.89543 20.5 2 20.5H5V26.5H23V20.5H26C27.1046 20.5 28 19.6046 28 18.5V8.5C28 7.39543 27.1046 6.5 26 6.5ZM7 2.5H21V6.5H7V2.5ZM21 24.5H7V14.5H21V24.5ZM26 18.5H23V12.5H5V18.5H2V8.5H26V18.5Z"
               fill="#C2C2C2"
-            />
-          </svg>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="28"
-            height="27"
-            viewBox="0 0 28 27"
-            fill="none"
-            onClick={handlePrintBtn3}
-            className={readNowStyle.printBtn}
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M26 6.5H23V0.5H5V6.5H2C0.89543 6.5 0 7.39543 0 8.5V18.5C0 19.6046 0.89543 20.5 2 20.5H5V26.5H23V20.5H26C27.1046 20.5 28 19.6046 28 18.5V8.5C28 7.39543 27.1046 6.5 26 6.5ZM7 2.5H21V6.5H7V2.5ZM21 24.5H7V14.5H21V24.5ZM26 18.5H23V12.5H5V18.5H2V8.5H26V18.5Z"
-              fill="#4dc6fa"
             />
           </svg>
         </div>
