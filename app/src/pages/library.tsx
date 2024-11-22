@@ -16,7 +16,7 @@ function Library() {
   const inputRef = useRef<HTMLInputElement>(null);
   const setWordsAtom = useSetRecoilState(wordsAtom);
   const words = useRecoilValue(wordsAtom);
-  const PAGE_SIZE = 25;
+  const PAGE_SIZE = 24;
   const [filteredWords, setFilteredWords] = useState<WordProps[]>(words); // 필터된 이미지 상태
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState<number>(PAGE_SIZE); // 현재 보이는 이미지 수
