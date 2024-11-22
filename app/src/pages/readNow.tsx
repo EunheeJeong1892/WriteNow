@@ -55,7 +55,9 @@ function ReadNow() {
       setAnswerList(data);
     };
 
-    getAnswers(); // 데이터 가져오기
+    if (cards.length === 0) {
+      getAnswers(); // 데이터 가져오기
+    }
   }, [setAnswerList, cards]);
 
   const handlePlayBtnClick = (
