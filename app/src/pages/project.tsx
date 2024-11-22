@@ -76,17 +76,33 @@ function Project() {
       <Header showInput={false} />
       <div className={projectStypes.container}>
         <div className={projectStypes.upperDiv}>
-          <div className={projectStypes.selectBorderDiv}>writeNow</div>
-          <div className={projectStypes.selectBorderDiv}>지금 쓰세요!</div>
+          <div className={projectStypes.selectBorderDiv}>
+            writeNow
+            <div className={projectStypes.creditBtnNW}></div>
+            <div className={projectStypes.creditBtnNE}></div>
+            <div className={projectStypes.creditBtnSW}></div>
+            <div className={projectStypes.creditBtnSE}></div>
+          </div>
+          <div className={projectStypes.selectBorderDiv}>
+            지금 쓰세요!
+            <div className={projectStypes.creditBtnNW}></div>
+            <div className={projectStypes.creditBtnNE}></div>
+            <div className={projectStypes.creditBtnSW}></div>
+            <div className={projectStypes.creditBtnSE}></div>
+          </div>
         </div>
-        <div>
+        <div className={projectStypes.selectBorderVideoDiv}>
           <video
             src="https://daqsct7lk85c0.cloudfront.net/public/main04.mp4" // 동영상 파일 URL
-            style={{ height: "100%", width: "844px", objectFit: "cover" }}
+            style={{ height: "474px", width: "844px", objectFit: "cover" }}
             playsInline
             controls
             muted={true}
           />
+          <div className={projectStypes.creditBtnNW}></div>
+          <div className={projectStypes.creditBtnNE}></div>
+          <div className={projectStypes.creditBtnSW}></div>
+          <div className={projectStypes.creditBtnSE}></div>
         </div>
         <div onClick={handlePrintBtn} className={projectStypes.creditBtn}>
           CREDIT
