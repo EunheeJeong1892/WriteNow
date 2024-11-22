@@ -6,6 +6,7 @@
   display: flex;
   gap: 51px;
   flex-direction: column;
+  align-items: center;
 }
 
 .upperDiv {
@@ -17,6 +18,71 @@
 
 .selectBorderDiv {
   cursor: pointer;
+  position: relative;
+  background: #fff;
+  height: 48px;
+  line-height: 48px;
+  padding: 0px 11px;
+  box-sizing: border-box;
+}
+
+.selectBorderVideoDiv {
+  cursor: pointer;
+  position: relative;
+  background: #fff;
+  box-sizing: border-box;
+  width: fit-content;
+  height: 474px;
+}
+.selectBorderVideoDiv:hover {
+  outline: 2px solid #007aff;
+}
+
+.creditBtnNW,
+.creditBtnNE,
+.creditBtnSW,
+.creditBtnSE {
+  display: none;
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid #007aff;
+  width: 8px;
+  height: 8px;
+  background-color: white;
+}
+.selectBorderDiv:hover {
+  outline: 2px solid #007aff;
+}
+
+.selectBorderDiv:hover .creditBtnNW,
+.selectBorderDiv:hover .creditBtnNE,
+.selectBorderDiv:hover .creditBtnSW,
+.selectBorderDiv:hover .creditBtnSE {
+  display: block;
+}
+
+.selectBorderVideoDiv:hover .creditBtnNW,
+.selectBorderVideoDiv:hover .creditBtnNE,
+.selectBorderVideoDiv:hover .creditBtnSW,
+.selectBorderVideoDiv:hover .creditBtnSE {
+  display: block;
+}
+
+.creditBtnNW {
+  top: -7px;
+  left: -7px;
+}
+.creditBtnNE {
+  top: -7px;
+  right: -7px;
+}
+.creditBtnSW {
+  bottom: -7px;
+  left: -7px;
+}
+.creditBtnSE {
+  bottom: -7px;
+  right: -7px;
 }
 
 .creditBtn:hover {
